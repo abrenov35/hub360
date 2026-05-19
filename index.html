@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>AB Renov · Portail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:    #162D49;
+      --cream:   #F3EAE2;
+      --lavende: #A495C3;
+      --white:   #FFFFFF;
+      --gray:    #8A8A8A;
+      --r: .26s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%; height: 100dvh;
+      overflow: hidden;
+      font-family: 'Jost', sans-serif;
+      background: var(--navy);
+    }
+    body { display: flex; flex-direction: column; }
+
+    /* ─── HEADER ─── */
+    header {
+      flex-shrink: 0;
+      background: var(--navy);
+      padding: 13px 16px 11px;
+      padding-top: max(13px, env(safe-area-inset-top));
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: baseline; gap: 5px; }
+    .logo-mark { font-weight: 700; font-size: 17px; color: var(--white); letter-spacing: -.5px; }
+    .logo-mark em {
+      display: inline-block; width: 2px; height: 11px;
+      background: var(--lavende); margin: 0 2px; vertical-align: middle;
+      border-radius: 1px; font-style: normal;
+    }
+    .logo-sub {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 10px; color: var(--lavende); letter-spacing: 2px;
+    }
+    .header-right { display: flex; gap: 7px; align-items: center; }
+
+    .search-wrap { position: relative; }
+    .search-input {
+      background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.13);
+      border-radius: 8px; color: var(--white); font-family: 'Jost', sans-serif;
+      font-size: 12px; padding: 7px 10px 7px 27px; outline: none;
+      width: 125px; transition: var(--r);
+    }
+    .search-input::placeholder { color: rgba(255,255,255,.36); }
+    .search-input:focus { width: 155px; border-color: var(--lavende); background: rgba(255,255,255,.13); }
+    .search-icon {
+      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+      opacity: .38; pointer-events: none;
+    }
+    .btn-icon {
+      background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.11);
+      border-radius: 8px; color: var(--white); cursor: pointer;
+      width: 31px; height: 31px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; transition: var(--r);
+    }
+    .btn-icon:hover { background: rgba(255,255,255,.17); }
+
+    /* ─── ZONE ICÔNES ─── */
+    .stage {
+      flex: 1; background: var(--cream);
+      border-radius: 20px 20px 0 0;
+      overflow-y: auto; overflow-x: hidden;
+      padding: 16px 14px 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gray); margin-bottom: 12px;
+    }
+
+    /* grille 4 colonnes */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px 8px;
+    }
+
+    .empty-state {
+      grid-column: 1/-1; text-align: center; padding: 48px 16px; opacity: .6;
+    }
+    .empty-state .ei { font-size: 30px; margin-bottom: 8px; }
+    .empty-state p { font-size: 12px; color: var(--navy); line-height: 1.6; }
+
+    /* ─── TUILE ─── */
+    .tile {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      position: relative; animation: pop .3s ease both;
+    }
+
+    /* Icône principale — toujours un <div> non-cliquable en soi ;
+       le JS gère le comportement selon le mode */
+    .tile-icon {
+      width: 100%; aspect-ratio: 1;
+      background: var(--white); border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(22,45,73,.13);
+      transition: transform var(--r);
+      overflow: hidden; user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tile-icon img { width: 55%; height: 55%; object-fit: contain; pointer-events: none; }
+    .tile-icon:active { transform: scale(.88); }
+
+    /* En mode édition : wiggle sur l'icône */
+    body.edit-mode .tile-icon { animation: wiggle .55s ease infinite alternate; }
+    /* Curseur de modification en mode édition */
+    body.edit-mode .tile-icon { cursor: pointer; }
+
+    /* badge supprimer — visible seulement en mode édition */
+    .tile-del {
+      display: none; position: absolute; top: -5px; right: -2px;
+      width: 21px; height: 21px; background: #e53935; color: white;
+      border: 2px solid var(--cream); border-radius: 50%;
+      font-size: 15px; line-height: 1; cursor: pointer; z-index: 5;
+      align-items: center; justify-content: center; padding: 0;
+      font-weight: 700;
+    }
+    body.edit-mode .tile-del { display: flex; }
+
+    /* badge modifier — visible seulement en mode édition */
+    .tile-edit-badge {
+      display: none; position: absolute; bottom: 20px; right: -2px;
+      width: 20px; height: 20px; background: var(--lavende); color: white;
+      border: 2px solid var(--cream); border-radius: 50%;
+      font-size: 11px; cursor: pointer; z-index: 5;
+      align-items: center; justify-content: center; padding: 0;
+    }
+    body.edit-mode .tile-edit-badge { display: flex; }
+
+    .tile-name {
+      font-size: 10px; font-weight: 500; color: var(--navy);
+      text-align: center; width: 100%;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* ─── BANNIÈRE mode édition ─── */
+    .edit-banner {
+      display: none; flex-shrink: 0;
+      background: var(--lavende); color: white;
+      text-align: center; font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; padding: 6px 16px;
+    }
+    body.edit-mode .edit-banner { display: block; }
+
+    /* ─── BARRE BAS ─── */
+    .bottom-bar {
+      flex-shrink: 0; background: var(--cream);
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(22,45,73,.07);
+    }
+    .btn-add {
+      flex: 1; background: var(--navy); color: var(--white); border: none;
+      border-radius: 10px; padding: 13px 0;
+      font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      transition: var(--r);
+    }
+    .btn-add:hover { background: #1e3d63; }
+    /* En mode édition, masquer Ajouter */
+    body.edit-mode .btn-add { display: none; }
+
+    .btn-edit {
+      flex: 1; background: rgba(22,45,73,.08); border: none; border-radius: 10px;
+      padding: 13px 14px; font-family: 'Jost', sans-serif;
+      font-size: 11px; font-weight: 600; color: var(--navy);
+      cursor: pointer; letter-spacing: .5px; white-space: nowrap;
+      transition: var(--r); text-align: center;
+    }
+    .btn-edit:hover { background: rgba(22,45,73,.14); }
+    body.edit-mode .btn-edit {
+      background: var(--lavende); color: var(--white);
+      font-weight: 700; letter-spacing: 1.5px;
+    }
+
+    /* ─── MODALE ─── */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(8,18,32,.65); backdrop-filter: blur(6px);
+      z-index: 400; align-items: flex-end; justify-content: center;
+    }
+    .overlay.open { display: flex; animation: fadeIn .2s ease; }
+
+    .modal {
+      background: var(--white); border-radius: 22px 22px 0 0;
+      width: 100%; max-width: 520px; padding: 26px 20px 30px;
+      animation: slideUp .26s cubic-bezier(.4,0,.2,1);
+    }
+    @media (min-height: 680px) and (min-width: 520px) {
+      .overlay { align-items: center; }
+      .modal { border-radius: 22px; }
+    }
+
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+    }
+    .modal-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+    .modal-close {
+      background: var(--cream); border: none; border-radius: 8px;
+      width: 30px; height: 30px; cursor: pointer; font-size: 15px;
+      display: flex; align-items: center; justify-content: center; color: var(--navy);
+    }
+
+    .field { margin-bottom: 13px; }
+    .field label {
+      display: block; font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gray); margin-bottom: 5px;
+    }
+    .field input {
+      width: 100%; border: 1.5px solid rgba(22,45,73,.15); border-radius: 9px;
+      padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 14px;
+      color: var(--navy); background: var(--cream); outline: none; transition: var(--r);
+    }
+    .field input:focus { border-color: var(--navy); background: var(--white); }
+    .field input::placeholder { color: rgba(22,45,73,.28); }
+
+    .emoji-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+    .emoji-btn {
+      width: 34px; height: 34px; border-radius: 8px;
+      border: 1.5px solid rgba(22,45,73,.10); background: var(--cream);
+      font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: var(--r);
+    }
+    .emoji-btn.selected { border-color: var(--navy); background: rgba(22,45,73,.07); }
+
+    /* boutons modale */
+    .modal-actions { display: flex; gap: 8px; margin-top: 6px; }
+    .btn-save {
+      flex: 1; background: var(--navy); color: var(--white); border: none;
+      border-radius: 10px; padding: 13px;
+      font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: var(--r);
+    }
+    .btn-save:hover { background: #1e3d63; }
+    .btn-del-modal {
+      background: #fde8e8; color: #c0392b; border: none; border-radius: 10px;
+      padding: 13px 16px; font-family: 'Jost', sans-serif; font-size: 18px;
+      cursor: pointer; transition: var(--r);
+    }
+    .btn-del-modal:hover { background: #f5c0c0; }
+    /* masquer la corbeille en mode création */
+    .btn-del-modal.hidden { display: none; }
+
+    /* ─── DARK MODE ─── */
+    body.dark { background: #0a1520; }
+    body.dark header { background: #0a1520; }
+    body.dark .stage { background: #111e2d; }
+    body.dark .section-label { color: rgba(232,224,216,.35); }
+    body.dark .tile-icon { background: #1a2e44; }
+    body.dark .tile-name { color: #c8c0b8; }
+    body.dark .tile-del { border-color: #111e2d; }
+    body.dark .tile-edit-badge { border-color: #111e2d; }
+    body.dark .bottom-bar { background: #111e2d; border-color: rgba(255,255,255,.05); }
+    body.dark .btn-edit { background: rgba(255,255,255,.07); color: #c8c0b8; }
+    body.dark .modal { background: #1a2e44; }
+    body.dark .modal-title { color: #e8e0d8; }
+    body.dark .field input { background: #111e2d; border-color: rgba(255,255,255,.12); color: #e8e0d8; }
+    body.dark .field input:focus { background: #1a2e44; border-color: var(--lavende); }
+    body.dark .emoji-btn { background: #111e2d; border-color: rgba(255,255,255,.08); }
+    body.dark .emoji-btn.selected { border-color: var(--lavende); }
+    body.dark .modal-close { background: #111e2d; color: #e8e0d8; }
+    body.dark .empty-state p { color: #c8c0b8; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes pop {
+      from { opacity: 0; transform: scale(.82); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes wiggle {
+      from { transform: rotate(-2deg) scale(.97); }
+      to   { transform: rotate(2deg)  scale(.97); }
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp {
+      from { transform: translateY(28px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-mark">AB<em></em>RENOV</span>
+      <span class="logo-sub">Portail</span>
+    </div>
+    <div class="header-right">
+      <div class="search-wrap">
+        <svg class="search-icon" width="13" height="13" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Rechercher…" autocomplete="off"/>
+      </div>
+      <button class="btn-icon" id="darkToggle" aria-label="Mode sombre">🌙</button>
+    </div>
+  </header>
+
+  <!-- BANNIÈRE mode édition -->
+  <div class="edit-banner">✏️ Mode édition — touchez une icône pour la modifier</div>
+
+  <!-- ZONE ICÔNES -->
+  <div class="stage">
+    <p class="section-label">Mes sites</p>
+    <div class="grid" id="sitesGrid"></div>
+  </div>
+
+  <!-- BARRE BAS -->
+  <div class="bottom-bar">
+    <button class="btn-edit" id="editBtn">✏️ Gérer</button>
+    <button class="btn-add" id="fabBtn">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Ajouter un site
+    </button>
+  </div>
+
+  <!-- MODALE -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitle">Nouveau site</span>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <div class="field">
+        <label for="inputName">Nom</label>
+        <input id="inputName" type="text" placeholder="ex : Google Drive" maxlength="24"/>
+      </div>
+      <div class="field">
+        <label for="inputUrl">URL</label>
+        <input id="inputUrl" type="url" placeholder="https://…"/>
+      </div>
+      <div class="field">
+        <label>Icône</label>
+        <div class="emoji-row" id="emojiRow"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save" id="saveBtn">Enregistrer</button>
+        <button class="btn-del-modal hidden" id="delBtn" title="Supprimer ce site">🗑️</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ─────────────────────────────────────────
+       DONNÉES
+    ───────────────────────────────────────── */
+    const KEY = 'abrenov_sites';
+    const EMOJIS = ['🌐','📁','📊','📧','💬','📅','🛒','🏠','🔧','⚙️','📌','🔗','🎨','📷','🎬','📚','💼','🔍','🚀','⭐'];
+
+    let selectedEmoji = EMOJIS[0];
+    let editId = null;        // null = création, string = modification
+    let isEditMode = false;   // true = mode gestion
+
+    function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } }
+    function save(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+    function esc(s) {
+      return String(s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ─────────────────────────────────────────
+       RENDU DE LA GRILLE
+    ───────────────────────────────────────── */
+    function render(q = '') {
+      const grid = document.getElementById('sitesGrid');
+      let sites = load();
+
+      if (q.trim()) {
+        const lq = q.toLowerCase();
+        sites = sites.filter(s =>
+          s.name.toLowerCase().includes(lq) || s.url.toLowerCase().includes(lq)
+        );
+      }
+      sites.sort((a, b) => a.name.localeCompare(b, 'fr'));
+
+      if (!sites.length) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="ei">🔗</div>
+            <p>${q ? 'Aucun résultat.' : 'Aucun site enregistré.<br>Appuyez sur <strong>Ajouter</strong>.'}</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = sites.map((s, i) => `
+        <div class="tile" style="animation-delay:${i * .04}s">
+          <div class="tile-icon" data-id="${esc(s.id)}" data-url="${esc(s.url)}" id="fav-${esc(s.id)}">
+            ${s.emoji}
+          </div>
+          <button class="tile-del" data-id="${esc(s.id)}" aria-label="Supprimer ${esc(s.name)}">−</button>
+          <div class="tile-name">${esc(s.name)}</div>
+        </div>
+      `).join('');
+
+      /* favicons automatiques */
+      sites.forEach(s => {
+        try {
+          const host = new URL(s.url).hostname;
+          const img = new Image();
+          img.onload = () => {
+            const el = document.getElementById('fav-' + s.id);
+            if (el) el.innerHTML = `<img src="${img.src}" alt=""/>`;
+          };
+          img.src = `https://www.google.com/s2/favicons?domain=${host}&sz=128`;
+        } catch {}
+      });
+    }
+
+    /* ─────────────────────────────────────────
+       CLIC SUR UNE TUILE
+       → mode normal : ouvre le site
+       → mode édition : ouvre la modale de modif
+    ───────────────────────────────────────── */
+    document.getElementById('sitesGrid').addEventListener('click', e => {
+      // Bouton supprimer
+      const delBtn = e.target.closest('.tile-del');
+      if (delBtn) {
+        e.stopPropagation();
+        deleteSite(delBtn.dataset.id);
+        return;
+      }
+
+      // Icône principale
+      const icon = e.target.closest('.tile-icon');
+      if (!icon) return;
+
+      if (isEditMode) {
+        // MODE ÉDITION → ouvrir modale de modification
+        e.preventDefault();
+        const id = icon.dataset.id;
+        const site = load().find(s => s.id === id);
+        if (site) openModal(site);
+      } else {
+        // MODE NORMAL → ouvrir le site dans un nouvel onglet
+        const url = icon.dataset.url;
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    });
+
+    /* ─────────────────────────────────────────
+       SUPPRESSION
+    ───────────────────────────────────────── */
+    function deleteSite(id) {
+      if (!confirm('Supprimer ce site ?')) return;
+      save(load().filter(s => s.id !== id));
+      render(document.getElementById('searchInput').value);
+    }
+
+    /* ─────────────────────────────────────────
+       MODE ÉDITION
+    ───────────────────────────────────────── */
+    document.getElementById('editBtn').addEventListener('click', () => {
+      isEditMode = !isEditMode;
+      document.body.classList.toggle('edit-mode', isEditMode);
+      document.getElementById('editBtn').textContent = isEditMode ? '✅ Terminer' : '✏️ Gérer';
+    });
+
+    /* ─────────────────────────────────────────
+       MODALE — ouvrir / fermer
+    ───────────────────────────────────────── */
+    function openModal(site = null) {
+      editId = site ? site.id : null;
+      document.getElementById('modalTitle').textContent = site ? 'Modifier le site' : 'Nouveau site';
+      document.getElementById('inputName').value = site ? site.name : '';
+      document.getElementById('inputUrl').value  = site ? site.url  : '';
+      selectedEmoji = site ? site.emoji : EMOJIS[0];
+
+      // Afficher/masquer la corbeille dans la modale
+      document.getElementById('delBtn').classList.toggle('hidden', !site);
+
+      buildEmojis();
+      document.getElementById('overlay').classList.add('open');
+      setTimeout(() => document.getElementById('inputName').focus(), 120);
+    }
+
+    function closeModal() {
+      document.getElementById('overlay').classList.remove('open');
+      editId = null;
+    }
+
+    /* ─────────────────────────────────────────
+       ENREGISTRER
+    ───────────────────────────────────────── */
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const name = document.getElementById('inputName').value.trim();
+      let   url  = document.getElementById('inputUrl').value.trim();
+
+      if (!name) { alert('Veuillez saisir un nom.'); return; }
+      if (!url)  { alert('Veuillez saisir une URL.'); return; }
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+      const sites = load();
+      if (editId) {
+        const i = sites.findIndex(s => s.id === editId);
+        if (i !== -1) sites[i] = { ...sites[i], name, url, emoji: selectedEmoji };
+      } else {
+        sites.push({
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+          name, url, emoji: selectedEmoji
+        });
+      }
+      save(sites);
+      closeModal();
+      render(document.getElementById('searchInput').value);
+    });
+
+    /* ─────────────────────────────────────────
+       SUPPRIMER depuis la modale
+    ───────────────────────────────────────── */
+    document.getElementById('delBtn').addEventListener('click', () => {
+      if (!editId) return;
+      if (!confirm('Supprimer ce site ?')) return;
+      save(load().filter(s => s.id !== editId));
+      closeModal();
+      render(document.getElementById('searchInput').value);
+    });
+
+    /* ─────────────────────────────────────────
+       EMOJI PICKER
+    ───────────────────────────────────────── */
+    function buildEmojis() {
+      document.getElementById('emojiRow').innerHTML = EMOJIS.map(e =>
+        `<button class="emoji-btn${e === selectedEmoji ? ' selected' : ''}"
+                 onclick="pickE('${e}')" type="button">${e}</button>`
+      ).join('');
+    }
+    function pickE(e) { selectedEmoji = e; buildEmojis(); }
+
+    /* ─────────────────────────────────────────
+       DARK MODE
+    ───────────────────────────────────────── */
+    const dt = document.getElementById('darkToggle');
+    function applyDark(on) {
+      document.body.classList.toggle('dark', on);
+      dt.textContent = on ? '☀️' : '🌙';
+      localStorage.setItem('abrenov_dark', on ? '1' : '0');
+    }
+    dt.addEventListener('click', () => applyDark(!document.body.classList.contains('dark')));
+    if (localStorage.getItem('abrenov_dark') === '1') applyDark(true);
+
+    /* ─────────────────────────────────────────
+       RECHERCHE
+    ───────────────────────────────────────── */
+    document.getElementById('searchInput').addEventListener('input', e => render(e.target.value));
+
+    /* ─────────────────────────────────────────
+       ÉVÉNEMENTS MODALE
+    ───────────────────────────────────────── */
+    document.getElementById('fabBtn').addEventListener('click', () => openModal());
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('overlay')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    ['inputName', 'inputUrl'].forEach(id =>
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') document.getElementById('saveBtn').click();
+      })
+    );
+
+    /* ─────────────────────────────────────────
+       INIT
+    ───────────────────────────────────────── */
+    buildEmojis();
+    render();
+  </script>
+</body>
+</html>
