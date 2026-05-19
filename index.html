@@ -81,11 +81,20 @@
       text-transform: uppercase; color: var(--gray); margin-bottom: 12px;
     }
 
-    /* grille 4 colonnes */
+    /* grille adaptive — tuiles max 90px */
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px 8px;
+      grid-template-columns: repeat(auto-fill, minmax(72px, 90px));
+      gap: 14px 12px;
+      justify-content: start;
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px 8px;
+        justify-content: stretch;
+      }
     }
 
     .empty-state {
@@ -103,7 +112,7 @@
     /* Icône principale — toujours un <div> non-cliquable en soi ;
        le JS gère le comportement selon le mode */
     .tile-icon {
-      width: 100%; aspect-ratio: 1;
+      width: 72px; height: 72px;
       background: var(--white); border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
       font-size: 26px; cursor: pointer;
@@ -113,6 +122,10 @@
       -webkit-tap-highlight-color: transparent;
     }
     .tile-icon img { width: 55%; height: 55%; object-fit: contain; pointer-events: none; }
+
+    @media (max-width: 480px) {
+      .tile-icon { width: 100%; height: auto; aspect-ratio: 1; }
+    }
     .tile-icon:active { transform: scale(.88); }
 
     /* En mode édition : wiggle sur l'icône */
