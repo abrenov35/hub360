@@ -257,21 +257,27 @@
 
     // ── API Google Sheets ──
     async function apiCall(params) {
-      if (!SCRIPT_URL || SCRIPT_URL === 'COLLER_VOTRE_URL_ICI') {
-        console.warn('URL Apps Script non configurée');
-        return null;
-      }
       syncBar('loading');
       try {
-        const res = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(params),
-          headers: { 'Content-Type': 'text/plain' }
-        });
-        const data = await res.json();
+        let res, data;
+        if (params.action === 'get') {
+          // GET avec paramètres URL
+          res = await fetch(SCRIPT_URL + '?action=get');
+          data = await res.json();
+        } else {
+          // POST en mode no-cors (pas de réponse lisible, mais ça écrit)
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(params),
+            headers: { 'Content-Type': 'text/plain' }
+          });
+          data = { ok: true };
+        }
         syncBar('ok');
         return data;
       } catch(e) {
+        console.error(e);
         syncBar('err');
         return null;
       }
@@ -283,7 +289,6 @@
         sitesCache = r.sites;
         localStorage.setItem('abrenov_sites', JSON.stringify(sitesCache));
       } else {
-        // fallback localStorage si pas de réseau
         try { sitesCache = JSON.parse(localStorage.getItem('abrenov_sites')) || []; } catch { sitesCache = []; }
       }
       render(document.getElementById('searchInput').value);
@@ -379,9 +384,9 @@
         if (i !== -1) sitesCache[i] = { ...sitesCache[i], name, url, iconId: selectedIcon.id };
         await apiCall({ action: 'update', id: editId, name, url, iconId: selectedIcon.id });
       } else {
-        const r = await apiCall({ action: 'add', name, url, iconId: selectedIcon.id });
-        const newId = (r && r.id) ? r.id : Date.now().toString(36);
+        const newId = Date.now().toString(36) + Math.random().toString(36).slice(2);
         sitesCache.push({ id: newId, name, url, iconId: selectedIcon.id });
+        await apiCall({ action: 'add', id: newId, name, url, iconId: selectedIcon.id });
       }
 
       localStorage.setItem('abrenov_sites', JSON.stringify(sitesCache));
