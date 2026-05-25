@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>AB Renov · Portail</title>
+  <title>HUB 360 - Pascale</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet"/>
@@ -58,6 +58,12 @@
     .stage { flex: 1; background: var(--cream); border-radius: 20px 20px 0 0; overflow-y: auto; overflow-x: hidden; padding: 16px 14px 8px; -webkit-overflow-scrolling: touch; }
     .section-label { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; }
 
+    .group-section { grid-column: 1 / -1; margin-bottom: 20px; }
+    .group-title { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray); margin: 4px 0 12px; padding-bottom: 6px; border-bottom: 1px solid rgba(22,45,73,.10); }
+    .group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 90px)); gap: 14px 12px; justify-content: start; }
+    @media (max-width: 480px) { .group-grid { grid-template-columns: repeat(4, 1fr); gap: 10px 8px; justify-content: stretch; } }
+
+
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 90px)); gap: 14px 12px; justify-content: start; }
     @media (max-width: 480px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 10px 8px; justify-content: stretch; } }
 
@@ -101,10 +107,14 @@
 
     .field { margin-bottom: 13px; }
     .field label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 5px; }
-    .field input, .field select { width: 100%; border: 1.5px solid rgba(22,45,73,.15); border-radius: 9px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 14px; color: var(--navy); background: var(--cream); outline: none; transition: var(--r); }
-    .field input:focus, .field select:focus { border-color: var(--navy); background: var(--white); }
+    .field input { width: 100%; border: 1.5px solid rgba(22,45,73,.15); border-radius: 9px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 14px; color: var(--navy); background: var(--cream); outline: none; transition: var(--r); }
+
+    .field select { width: 100%; border: 1.5px solid rgba(22,45,73,.15); border-radius: 9px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 14px; color: var(--navy); background: var(--cream); outline: none; transition: var(--r); }
+    .field select:focus { border-color: var(--navy); background: var(--white); }
+    .field.hidden { display: none; }
+
+    .field input:focus { border-color: var(--navy); background: var(--white); }
     .field input::placeholder { color: rgba(22,45,73,.28); }
-    .group-title { grid-column: 1 / -1; margin: 10px 0 0; padding-top: 10px; border-top: 1px solid rgba(22,45,73,.10); font-size: 10px; font-weight: 700; letter-spacing: 2.3px; text-transform: uppercase; color: rgba(22,45,73,.50); }
 
     .icon-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
     .icon-btn { width: 44px; height: 44px; border-radius: 12px; border: 2.5px solid transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--r); padding: 0; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
@@ -130,9 +140,10 @@
     body.dark .btn-edit { background: rgba(255,255,255,.07); color: #c8c0b8; }
     body.dark .modal { background: #1a2e44; }
     body.dark .modal-title { color: #e8e0d8; }
-    body.dark .field input, body.dark .field select { background: #111e2d; border-color: rgba(255,255,255,.12); color: #e8e0d8; }
-    body.dark .field input:focus, body.dark .field select:focus { background: #1a2e44; border-color: var(--lavende); }
-    body.dark .group-title { border-top-color: rgba(255,255,255,.08); color: rgba(232,224,216,.42); }
+    body.dark .field input { background: #111e2d; border-color: rgba(255,255,255,.12); color: #e8e0d8; }
+    body.dark .field select { background: #111e2d; border-color: rgba(255,255,255,.12); color: #e8e0d8; }
+
+    body.dark .field input:focus { background: #1a2e44; border-color: var(--lavende); }
     body.dark .icon-btn { box-shadow: 0 2px 8px rgba(0,0,0,.3); }
     body.dark .modal-close { background: #111e2d; color: #e8e0d8; }
     body.dark .empty-state p { color: #c8c0b8; }
@@ -148,8 +159,8 @@
 
   <header>
     <div class="logo">
-      <span class="logo-mark">AB<em></em>RENOV</span>
-      <span class="logo-sub">Portail</span>
+      <span class="logo-mark">HUB<em></em>360</span>
+      <span class="logo-sub">Pascale</span>
     </div>
     <div class="header-right">
       <div class="search-wrap">
@@ -165,7 +176,7 @@
   <div class="edit-banner">✏️ Mode édition — touchez une icône pour la modifier</div>
 
   <div class="stage">
-    <p class="section-label">Mes sites</p>
+    <p class="section-label">Mes applications</p>
     <div class="grid" id="sitesGrid"></div>
   </div>
 
@@ -173,7 +184,7 @@
     <button class="btn-edit" id="editBtn">✏️ Gérer</button>
     <button class="btn-add" id="fabBtn">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Ajouter un site
+      Ajouter une app
     </button>
   </div>
 
@@ -185,7 +196,7 @@
       </div>
       <div class="field">
         <label for="inputName">Nom</label>
-        <input id="inputName" type="text" placeholder="ex : Google Drive" maxlength="24"/>
+        <input id="inputName" type="text" placeholder="ex : Google Drive" maxlength="30"/>
       </div>
       <div class="field">
         <label for="inputUrl">URL</label>
@@ -195,9 +206,9 @@
         <label for="inputGroup">Groupe</label>
         <select id="inputGroup"></select>
       </div>
-      <div class="field" id="newGroupField" style="display:none">
+      <div class="field hidden" id="newGroupField">
         <label for="inputNewGroup">Nouveau groupe</label>
-        <input id="inputNewGroup" type="text" placeholder="ex : RH, Production, Fournisseurs…" maxlength="28"/>
+        <input id="inputNewGroup" type="text" placeholder="ex : Production" maxlength="30"/>
       </div>
       <div class="field">
         <label>Icône</label>
@@ -215,10 +226,8 @@
     // ⚙️ CONFIGURATION — collez ici votre URL Apps Script
     //    après avoir déployé (étape 2 du guide)
     // ═══════════════════════════════════════════════════
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQXUTdOXMmtTAEC1qrFYXi4RWhNKZM8RZ_qfDEXN1Xx_b4md2UwyS8K-SfLICGp2JD/exec';
-
-    const DEFAULT_GROUPS = ['IA', 'Gestion', 'Chantiers', 'Devis', 'Clients', 'Dropbox', 'Administratif', 'Finance', 'Suivi', 'Outils', 'Divers'];
-    let groupsCache = [...DEFAULT_GROUPS];
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz0f-BEEGMu85gSqie4Z4AlqhNVjxHCLTOlGkyt7aa2wZTsgjYoYoQhC5ccYSzlc_k/exec';
+    const APP_VERSION = '2026-05-25-iphone-cache-fix';
 
     // ── Icônes SVG premium ──
     const ICONS = [
@@ -256,10 +265,25 @@
       </svg>`;
     }
 
+    const DEFAULT_GROUPS = [
+      'Administratif',
+      'Chantiers',
+      'Clients',
+      'Devis',
+      'Dropbox',
+      'Finance',
+      'Gestion',
+      'IA',
+      'Outils',
+      'Suivi',
+      'Divers'
+    ];
+
     let selectedIcon = ICONS[0];
     let editId = null;
     let isEditMode = false;
     let sitesCache = [];
+    let groupsCache = [...DEFAULT_GROUPS];
 
     // ── Sync bar ──
     function syncBar(state) {
@@ -274,11 +298,9 @@
       try {
         let res, data;
         if (params.action === 'get') {
-          // GET avec paramètres URL
-          res = await fetch(SCRIPT_URL + '?action=get');
+          res = await fetch(SCRIPT_URL + '?action=get&t=' + Date.now(), { cache: 'no-store' });
           data = await res.json();
         } else {
-          // POST en mode no-cors (pas de réponse lisible, mais ça écrit)
           await fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -299,60 +321,65 @@
     async function loadFromSheet() {
       const r = await apiCall({ action: 'get' });
       if (r && r.sites) {
-        sitesCache = r.sites.map(s => ({ ...s, url: normalizeUrl(s.url), group: cleanGroupName(s.group) }));
-        if (Array.isArray(r.groups)) groupsCache = [...new Set([...DEFAULT_GROUPS, ...r.groups])];
-        refreshGroupsFromSites();
-        localStorage.setItem('abrenov_sites', JSON.stringify(sitesCache));
+        sitesCache = r.sites.map(s => ({ ...s, group: cleanGroupName(s.group) }));
+        groupsCache = Array.isArray(r.groups) && r.groups.length ? r.groups : groupsFromSites();
+        groupsCache = normalizeGroups(groupsCache);
+        localStorage.setItem('hub360_pascale_sites', JSON.stringify(sitesCache));
+        localStorage.setItem('hub360_pascale_groups', JSON.stringify(groupsCache));
       } else {
-        try { sitesCache = (JSON.parse(localStorage.getItem('abrenov_sites')) || []).map(s => ({ ...s, url: normalizeUrl(s.url), group: cleanGroupName(s.group) })); refreshGroupsFromSites(); } catch { sitesCache = []; }
+        try { sitesCache = JSON.parse(localStorage.getItem('hub360_pascale_sites')) || []; } catch { sitesCache = []; }
+        try { groupsCache = JSON.parse(localStorage.getItem('hub360_pascale_groups')) || [...DEFAULT_GROUPS]; } catch { groupsCache = [...DEFAULT_GROUPS]; }
+        groupsCache = normalizeGroups(groupsCache);
       }
       render(document.getElementById('searchInput').value);
     }
 
     function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-    function normalizeUrl(url) {
-      url = String(url || '').trim();
-      if (!url) return '';
-      return /^https?:\/\//i.test(url) ? url : 'https://' + url;
-    }
-
-    function cleanGroupName(name) {
-      const g = String(name || '').trim();
+    function cleanGroupName(group) {
+      const g = String(group || '').trim();
       return g || 'Divers';
     }
 
-    function refreshGroupsFromSites() {
-      const used = sitesCache.map(s => cleanGroupName(s.group));
-      groupsCache = [...new Set([...DEFAULT_GROUPS, ...groupsCache, ...used])]
+    function normalizeUrl(url) {
+      url = String(url || '').trim();
+      if (!url) return '';
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+      return url;
+    }
+
+    function normalizeGroups(groups) {
+      return [...new Set([...(groups || []), ...DEFAULT_GROUPS, ...groupsFromSites()])]
+        .map(cleanGroupName)
         .filter(Boolean)
         .sort((a, b) => a.localeCompare(b, 'fr'));
     }
 
-    function buildGroupSelect(value = 'Divers') {
-      refreshGroupsFromSites();
+    function groupsFromSites() {
+      return [...new Set(sitesCache.map(s => cleanGroupName(s.group)))];
+    }
+
+    function buildGroupSelect(currentGroup = 'Divers') {
+      groupsCache = normalizeGroups(groupsCache);
       const select = document.getElementById('inputGroup');
-      const selected = cleanGroupName(value);
-      if (!groupsCache.includes(selected)) groupsCache.push(selected);
-      select.innerHTML = groupsCache.map(g => `<option value="${esc(g)}"${g===selected?' selected':''}>${esc(g)}</option>`).join('') + '<option value="__new__">+ Nouveau groupe</option>';
-      document.getElementById('newGroupField').style.display = 'none';
+      const current = cleanGroupName(currentGroup);
+      if (!groupsCache.includes(current)) groupsCache.push(current);
+      groupsCache = normalizeGroups(groupsCache);
+
+      select.innerHTML = groupsCache.map(g =>
+        `<option value="${esc(g)}"${g === current ? ' selected' : ''}>${esc(g)}</option>`
+      ).join('') + '<option value="__new__">+ Nouveau groupe</option>';
+
+      document.getElementById('newGroupField').classList.add('hidden');
       document.getElementById('inputNewGroup').value = '';
     }
 
-    function selectedGroupValue() {
-      const selectValue = document.getElementById('inputGroup').value;
-      if (selectValue === '__new__') {
-        const newGroup = cleanGroupName(document.getElementById('inputNewGroup').value);
-        if (!groupsCache.includes(newGroup)) groupsCache.push(newGroup);
-        return newGroup;
-      }
-      return cleanGroupName(selectValue);
-    }
 
-    // ── Rendu grille ──
+    // ── Rendu grille par groupes ──
     function render(q = '') {
       const grid = document.getElementById('sitesGrid');
-      let sites = [...sitesCache];
+      let sites = [...sitesCache].map(s => ({ ...s, group: cleanGroupName(s.group), url: normalizeUrl(s.url) }));
+
       if (q.trim()) {
         const lq = q.toLowerCase();
         sites = sites.filter(s =>
@@ -361,35 +388,43 @@
           String(s.group || '').toLowerCase().includes(lq)
         );
       }
-      sites.sort((a, b) => {
-        const ga = cleanGroupName(a.group);
-        const gb = cleanGroupName(b.group);
-        return ga.localeCompare(gb, 'fr') || String(a.name || '').localeCompare(String(b.name || ''), 'fr');
-      });
+
+      sites.sort((a, b) =>
+        cleanGroupName(a.group).localeCompare(cleanGroupName(b.group), 'fr') ||
+        String(a.name || '').localeCompare(String(b.name || ''), 'fr')
+      );
 
       if (!sites.length) {
-        grid.innerHTML = `<div class="empty-state"><div class="ei">🔗</div><p>${q ? 'Aucun résultat.' : 'Aucun site enregistré.<br>Appuyez sur <strong>Ajouter</strong>.'}</p></div>`;
+        grid.innerHTML = `<div class="empty-state"><div class="ei">🔗</div><p>${q ? 'Aucun résultat.' : 'Aucune application enregistrée.<br>Appuyez sur <strong>Ajouter</strong>.'}</p></div>`;
         return;
       }
 
-      let lastGroup = '';
-      grid.innerHTML = sites.map((s, i) => {
-        const icon = ICONS.find(ic => ic.id === s.iconId) || ICONS[0];
-        const url = normalizeUrl(s.url);
-        const group = cleanGroupName(s.group);
-        const groupHtml = group !== lastGroup ? `<div class="group-title">${esc(group)}</div>` : '';
-        lastGroup = group;
-        return `${groupHtml}<div class="tile" style="animation-delay:${i*.04}s">
-          <a class="tile-icon" href="${esc(url)}" target="_blank" rel="noopener noreferrer" data-id="${esc(s.id)}" data-url="${esc(url)}" id="fav-${esc(s.id)}" aria-label="Ouvrir ${esc(s.name)}">${iconSVG(icon, 36)}</a>
-          <button class="tile-del" data-id="${esc(s.id)}" aria-label="Supprimer">−</button>
-          <div class="tile-name">${esc(s.name)}</div>
-        </div>`;
+      const groups = [...new Set(sites.map(s => cleanGroupName(s.group)))]
+        .sort((a, b) => a.localeCompare(b, 'fr'));
+
+      grid.innerHTML = groups.map(group => {
+        const groupSites = sites.filter(s => cleanGroupName(s.group) === group);
+
+        return `<section class="group-section">
+          <div class="group-title">${esc(group)}</div>
+          <div class="group-grid">
+            ${groupSites.map((s, i) => {
+              const icon = ICONS.find(ic => ic.id === s.iconId) || ICONS[0];
+              const safeUrl = esc(normalizeUrl(s.url));
+              return `<div class="tile" style="animation-delay:${i*.04}s">
+                <a class="tile-icon" href="${safeUrl}" target="_blank" rel="noopener noreferrer" data-id="${esc(s.id)}" data-url="${safeUrl}" id="fav-${esc(s.id)}">${iconSVG(icon, 36)}</a>
+                <button class="tile-del" data-id="${esc(s.id)}" aria-label="Supprimer">−</button>
+                <div class="tile-name">${esc(s.name)}</div>
+              </div>`;
+            }).join('')}
+          </div>
+        </section>`;
       }).join('');
 
       // favicons auto
       sites.forEach(s => {
         try {
-          const root = new URL(s.url).origin;
+          const root = new URL(normalizeUrl(s.url)).origin;
           const img = new Image();
           img.onload = () => { const el = document.getElementById('fav-'+s.id); if(el) el.innerHTML = `<img src="${img.src}" alt="" style="width:55%;height:55%;object-fit:contain;border-radius:4px;"/>`; };
           img.src = root + '/favicon.ico';
@@ -400,7 +435,7 @@
     // ── Clic tuile ──
     document.getElementById('sitesGrid').addEventListener('click', e => {
       const delBtn = e.target.closest('.tile-del');
-      if (delBtn) { e.stopPropagation(); deleteSite(delBtn.dataset.id); return; }
+      if (delBtn) { e.preventDefault(); e.stopPropagation(); deleteSite(delBtn.dataset.id); return; }
       const icon = e.target.closest('.tile-icon');
       if (!icon) return;
       if (isEditMode) {
@@ -408,14 +443,14 @@
         const site = sitesCache.find(s => s.id === icon.dataset.id);
         if (site) openModal(site);
       }
-      // Hors mode édition, le vrai lien <a target="_blank"> s'ouvre directement. Plus fiable sur iPhone que window.open().
+      // Hors mode édition, le lien <a target="_blank"> gère l'ouverture, plus fiable sur iPhone.
     });
 
     // ── Supprimer ──
     async function deleteSite(id) {
       if (!confirm('Supprimer ce site ?')) return;
       sitesCache = sitesCache.filter(s => s.id !== id);
-      localStorage.setItem('abrenov_sites', JSON.stringify(sitesCache));
+      localStorage.setItem('hub360_pascale_sites', JSON.stringify(sitesCache));
       render(document.getElementById('searchInput').value);
       await apiCall({ action: 'delete', id });
     }
@@ -433,7 +468,7 @@
       document.getElementById('modalTitle').textContent = site ? 'Modifier' : 'Nouveau site';
       document.getElementById('inputName').value = site ? site.name : '';
       document.getElementById('inputUrl').value  = site ? site.url  : '';
-      buildGroupSelect(site ? site.group : 'Divers');
+      buildGroupSelect(site ? cleanGroupName(site.group) : 'Divers');
       selectedIcon = site ? (ICONS.find(ic => ic.id === site.iconId) || ICONS[0]) : ICONS[0];
       document.getElementById('delBtn').classList.toggle('hidden', !site);
       buildIcons();
@@ -445,11 +480,14 @@
     // ── Enregistrer ──
     document.getElementById('saveBtn').addEventListener('click', async () => {
       const name = document.getElementById('inputName').value.trim();
-      let   url  = document.getElementById('inputUrl').value.trim();
-      const group = selectedGroupValue();
+      let   url  = normalizeUrl(document.getElementById('inputUrl').value.trim());
+      let group = document.getElementById('inputGroup').value;
+      if (group === '__new__') group = document.getElementById('inputNewGroup').value.trim();
+      group = cleanGroupName(group);
+
       if (!name) { alert('Nom requis.'); return; }
       if (!url)  { alert('URL requise.'); return; }
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+      if (!group) { alert('Groupe requis.'); return; }
 
       const btn = document.getElementById('saveBtn');
       btn.disabled = true; btn.textContent = '…';
@@ -464,7 +502,9 @@
         await apiCall({ action: 'add', id: newId, name, url, iconId: selectedIcon.id, group });
       }
 
-      localStorage.setItem('abrenov_sites', JSON.stringify(sitesCache));
+      groupsCache = normalizeGroups([...groupsCache, group]);
+      localStorage.setItem('hub360_pascale_sites', JSON.stringify(sitesCache));
+      localStorage.setItem('hub360_pascale_groups', JSON.stringify(groupsCache));
       btn.disabled = false; btn.textContent = 'Enregistrer';
       closeModal();
       render(document.getElementById('searchInput').value);
@@ -474,7 +514,7 @@
     document.getElementById('delBtn').addEventListener('click', async () => {
       if (!editId || !confirm('Supprimer ?')) return;
       sitesCache = sitesCache.filter(s => s.id !== editId);
-      localStorage.setItem('abrenov_sites', JSON.stringify(sitesCache));
+      localStorage.setItem('hub360_pascale_sites', JSON.stringify(sitesCache));
       closeModal();
       render(document.getElementById('searchInput').value);
       await apiCall({ action: 'delete', id: editId });
@@ -490,15 +530,24 @@
 
     // ── Dark mode ──
     const dt = document.getElementById('darkToggle');
-    function applyDark(on) { document.body.classList.toggle('dark',on); dt.textContent=on?'☀️':'🌙'; localStorage.setItem('abrenov_dark',on?'1':'0'); }
+    function applyDark(on) { document.body.classList.toggle('dark',on); dt.textContent=on?'☀️':'🌙'; localStorage.setItem('hub360_pascale_dark',on?'1':'0'); }
     dt.addEventListener('click', () => applyDark(!document.body.classList.contains('dark')));
-    if (localStorage.getItem('abrenov_dark')==='1') applyDark(true);
+    if (localStorage.getItem('hub360_pascale_dark')==='1') applyDark(true);
 
     // ── Recherche ──
     document.getElementById('searchInput').addEventListener('input', e => render(e.target.value));
 
     // ── Sync manuel ──
-    document.getElementById('syncBtn').addEventListener('click', loadFromSheet);
+    document.getElementById('syncBtn').addEventListener('click', () => {
+      localStorage.removeItem('hub360_pascale_sites');
+      localStorage.removeItem('hub360_pascale_groups');
+      loadFromSheet();
+    });
+
+    document.getElementById('inputGroup').addEventListener('change', e => {
+      document.getElementById('newGroupField').classList.toggle('hidden', e.target.value !== '__new__');
+      if (e.target.value === '__new__') document.getElementById('inputNewGroup').focus();
+    });
 
     // ── Événements modale ──
     document.getElementById('fabBtn').addEventListener('click', () => openModal());
@@ -506,10 +555,13 @@
     document.getElementById('overlay').addEventListener('click', e => { if(e.target===document.getElementById('overlay')) closeModal(); });
     document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
     ['inputName','inputUrl','inputNewGroup'].forEach(id => document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('saveBtn').click(); }));
-    document.getElementById('inputGroup').addEventListener('change', e => {
-      document.getElementById('newGroupField').style.display = e.target.value === '__new__' ? 'block' : 'none';
-      if (e.target.value === '__new__') setTimeout(() => document.getElementById('inputNewGroup').focus(), 80);
-    });
+
+    // ── Reset cache local si nouvelle version ──
+    if (localStorage.getItem('hub360_app_version') !== APP_VERSION) {
+      localStorage.removeItem('hub360_pascale_sites');
+      localStorage.removeItem('hub360_pascale_groups');
+      localStorage.setItem('hub360_app_version', APP_VERSION);
+    }
 
     // ── Init ──
     buildIcons();
