@@ -215,7 +215,7 @@
     // ⚙️ CONFIGURATION — collez ici votre URL Apps Script
     //    après avoir déployé (étape 2 du guide)
     // ═══════════════════════════════════════════════════
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1Ks3-RE9n6df4xB0blXMEh8jD1G0a0ijqyELKZF6w37mp73J3hd8wuDT4rR__Bfay/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQXUTdOXMmtTAEC1qrFYXi4RWhNKZM8RZ_qfDEXN1Xx_b4md2UwyS8K-SfLICGp2JD/exec';
 
     const DEFAULT_GROUPS = ['IA', 'Gestion', 'Chantiers', 'Devis', 'Clients', 'Dropbox', 'Administratif', 'Finance', 'Suivi', 'Outils', 'Divers'];
     let groupsCache = [...DEFAULT_GROUPS];
@@ -324,7 +324,9 @@
 
     function refreshGroupsFromSites() {
       const used = sitesCache.map(s => cleanGroupName(s.group));
-      groupsCache = [...new Set([...DEFAULT_GROUPS, ...groupsCache, ...used])].filter(Boolean);
+      groupsCache = [...new Set([...DEFAULT_GROUPS, ...groupsCache, ...used])]
+        .filter(Boolean)
+        .sort((a, b) => a.localeCompare(b, 'fr'));
     }
 
     function buildGroupSelect(value = 'Divers') {
@@ -351,11 +353,18 @@
     function render(q = '') {
       const grid = document.getElementById('sitesGrid');
       let sites = [...sitesCache];
-      if (q.trim()) { const lq = q.toLowerCase(); sites = sites.filter(s => s.name.toLowerCase().includes(lq) || s.url.toLowerCase().includes(lq)); }
+      if (q.trim()) {
+        const lq = q.toLowerCase();
+        sites = sites.filter(s =>
+          String(s.name || '').toLowerCase().includes(lq) ||
+          String(s.url || '').toLowerCase().includes(lq) ||
+          String(s.group || '').toLowerCase().includes(lq)
+        );
+      }
       sites.sort((a, b) => {
-        const ga = cleanGroupName(a.group), gb = cleanGroupName(b.group);
-        const ra = groupsCache.indexOf(ga), rb = groupsCache.indexOf(gb);
-        return (ra - rb) || ga.localeCompare(gb, 'fr') || a.name.localeCompare(b.name, 'fr');
+        const ga = cleanGroupName(a.group);
+        const gb = cleanGroupName(b.group);
+        return ga.localeCompare(gb, 'fr') || String(a.name || '').localeCompare(String(b.name || ''), 'fr');
       });
 
       if (!sites.length) {
