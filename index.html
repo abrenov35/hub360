@@ -71,6 +71,30 @@
     .empty-state .ei { font-size: 30px; margin-bottom: 8px; }
     .empty-state p { font-size: 12px; color: var(--navy); line-height: 1.6; }
 
+
+    /* ─── LIENS TUILES — rendu app, pas rendu lien navigateur ─── */
+    a,
+    a:visited,
+    a:hover,
+    a:active {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tile a,
+    .tile a:visited,
+    .tile a:hover,
+    .tile a:active {
+      text-decoration: none;
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tile-icon {
+      text-decoration: none;
+      color: inherit;
+    }
+
     /* ─── TUILE ─── */
     .tile { display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative; animation: pop .3s ease both; }
 
@@ -227,7 +251,7 @@
     //    après avoir déployé (étape 2 du guide)
     // ═══════════════════════════════════════════════════
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxprmK8bUeV4GaxxiI28L7I5bg7M0fYzhGvqR3c0j_5_f9YZr43V0KVdsvOFe3p4u3Q/exec';
-    const APP_VERSION = '2026-05-25-ios-fix-v5';
+    const APP_VERSION = '2026-05-25-premium-links-v6';
 
     // ── Icônes SVG premium ──
     const ICONS = [
