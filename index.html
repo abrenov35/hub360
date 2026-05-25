@@ -17,7 +17,8 @@
       --r: .26s cubic-bezier(.4,0,.2,1);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; height: 100dvh; overflow: hidden; font-family: 'Jost', sans-serif; background: var(--navy); }
+    html, body { height: 100%; min-height: 100dvh; overflow: hidden; font-family: 'Jost', sans-serif; background: var(--navy); }
+    body { overscroll-behavior: none; touch-action: manipulation; }
     body { display: flex; flex-direction: column; }
 
     /* ─── HEADER ─── */
@@ -55,11 +56,25 @@
     body.edit-mode .edit-banner { display: block; }
 
     /* ─── ZONE ICÔNES ─── */
-    .stage { flex: 1; background: var(--cream); border-radius: 20px 20px 0 0; overflow-y: auto; overflow-x: hidden; padding: 16px 14px 8px; -webkit-overflow-scrolling: touch; }
+    .stage { flex: 1; background: var(--cream); border-radius: 20px 20px 0 0; overflow-y: auto; overflow-x: hidden; padding: 14px 14px 8px; -webkit-overflow-scrolling: touch; }
     .section-label { font-size: 10px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 90px)); gap: 14px 12px; justify-content: start; }
-    @media (max-width: 480px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 10px 8px; justify-content: stretch; } }
+    .group-title { grid-column: 1 / -1; margin: 8px 0 0; padding-top: 8px; border-top: 1px solid rgba(22,45,73,.08); font-size: 9px; font-weight: 700; letter-spacing: 2.4px; text-transform: uppercase; color: rgba(22,45,73,.46); }
+    .group-title:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    @media (max-width: 480px) {
+      header { padding-left: 12px; padding-right: 12px; }
+      .logo-sub { display: none; }
+      .search-input { width: 112px; }
+      .search-input:focus { width: 132px; }
+      .stage { padding: 10px 10px 6px; border-radius: 16px 16px 0 0; }
+      .section-label { margin-bottom: 8px; }
+      .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 7px; justify-content: stretch; }
+      .group-title { margin-top: 6px; padding-top: 7px; font-size: 8.5px; letter-spacing: 2px; }
+      .bottom-bar { padding: 7px 10px; padding-bottom: max(7px, env(safe-area-inset-bottom)); }
+      .btn-add, .btn-edit { padding-top: 11px; padding-bottom: 11px; }
+    }
+    @media (max-width: 360px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
     .empty-state { grid-column: 1/-1; text-align: center; padding: 48px 16px; opacity: .6; }
     .empty-state .ei { font-size: 30px; margin-bottom: 8px; }
@@ -68,7 +83,7 @@
     /* ─── TUILE ─── */
     .tile { display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative; animation: pop .3s ease both; }
 
-    .tile-icon { width: 72px; height: 72px; background: var(--white); border-radius: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(22,45,73,.13); transition: transform var(--r); overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .tile-icon { width: 72px; height: 72px; background: var(--white); border-radius: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(22,45,73,.13); transition: transform var(--r); overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; text-decoration: none; color: inherit; }
     @media (max-width: 480px) { .tile-icon { width: 100%; height: auto; aspect-ratio: 1; } }
     .tile-icon img { width: 55%; height: 55%; object-fit: contain; border-radius: 4px; pointer-events: none; }
     .tile-icon:active { transform: scale(.88); }
@@ -78,6 +93,7 @@
     body.edit-mode .tile-del { display: flex; }
 
     .tile-name { font-size: 10px; font-weight: 500; color: var(--navy); text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 480px) { .tile-name { font-size: 9.5px; } }
 
     /* ─── BARRE BAS ─── */
     .bottom-bar { flex-shrink: 0; background: var(--cream); display: flex; align-items: center; gap: 8px; padding: 8px 14px; padding-bottom: max(8px, env(safe-area-inset-bottom)); border-top: 1px solid rgba(22,45,73,.07); }
@@ -122,6 +138,7 @@
     body.dark header { background: #0a1520; }
     body.dark .stage { background: #111e2d; }
     body.dark .section-label { color: rgba(232,224,216,.35); }
+    body.dark .group-title { border-top-color: rgba(255,255,255,.06); color: rgba(232,224,216,.42); }
     body.dark .tile-icon { background: #1a2e44; }
     body.dark .tile-name { color: #c8c0b8; }
     body.dark .tile-del { border-color: #111e2d; }
@@ -296,22 +313,45 @@
 
     function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+    // ── Groupes visuels sans modification de la base ──
+    function visualGroup(site) {
+      const text = ((site.name || '') + ' ' + (site.url || '')).toLowerCase();
+      if (/dropbox|drive|dossier|fichier|document/.test(text)) return 'Documents';
+      if (/devis|facture|budget|finance|prix|marge|aps|chiffrage/.test(text)) return 'Devis & gestion';
+      if (/chantier|travaux|planning|intervention|sav|terrain|suivi/.test(text)) return 'Chantiers';
+      if (/ia|ai|claude|chatgpt|gpt|assistant|prompt/.test(text)) return 'IA & outils';
+      if (/mail|gmail|contact|opportunit|crm|vertuoza|client/.test(text)) return 'Clients & CRM';
+      return 'Autres';
+    }
+
+    function groupRank(label) {
+      return ['Clients & CRM', 'Devis & gestion', 'Chantiers', 'Documents', 'IA & outils', 'Autres'].indexOf(label);
+    }
+
     // ── Rendu grille ──
     function render(q = '') {
       const grid = document.getElementById('sitesGrid');
       let sites = [...sitesCache];
       if (q.trim()) { const lq = q.toLowerCase(); sites = sites.filter(s => s.name.toLowerCase().includes(lq) || s.url.toLowerCase().includes(lq)); }
-      sites.sort((a, b) => a.name.localeCompare(b, 'fr'));
+      sites.sort((a, b) => {
+        const ga = visualGroup(a), gb = visualGroup(b);
+        const diff = groupRank(ga) - groupRank(gb);
+        return diff || a.name.localeCompare(b.name, 'fr');
+      });
 
       if (!sites.length) {
         grid.innerHTML = `<div class="empty-state"><div class="ei">🔗</div><p>${q ? 'Aucun résultat.' : 'Aucun site enregistré.<br>Appuyez sur <strong>Ajouter</strong>.'}</p></div>`;
         return;
       }
 
+      let lastGroup = '';
       grid.innerHTML = sites.map((s, i) => {
         const icon = ICONS.find(ic => ic.id === s.iconId) || ICONS[0];
-        return `<div class="tile" style="animation-delay:${i*.04}s">
-          <div class="tile-icon" data-id="${esc(s.id)}" data-url="${esc(s.url)}" id="fav-${esc(s.id)}">${iconSVG(icon, 36)}</div>
+        const group = visualGroup(s);
+        const groupHtml = group !== lastGroup ? `<div class="group-title">${esc(group)}</div>` : '';
+        lastGroup = group;
+        return `${groupHtml}<div class="tile" style="animation-delay:${i*.04}s">
+          <a class="tile-icon" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" data-id="${esc(s.id)}" data-url="${esc(s.url)}" id="fav-${esc(s.id)}" aria-label="Ouvrir ${esc(s.name)} dans un nouvel onglet">${iconSVG(icon, 36)}</a>
           <button class="tile-del" data-id="${esc(s.id)}" aria-label="Supprimer">−</button>
           <div class="tile-name">${esc(s.name)}</div>
         </div>`;
@@ -334,8 +374,13 @@
       if (delBtn) { e.stopPropagation(); deleteSite(delBtn.dataset.id); return; }
       const icon = e.target.closest('.tile-icon');
       if (!icon) return;
-      if (isEditMode) { const site = sitesCache.find(s => s.id === icon.dataset.id); if (site) openModal(site); }
-      else { const url = icon.dataset.url; if (url) window.open(url, '_blank', 'noopener,noreferrer'); }
+      if (isEditMode) {
+        e.preventDefault();
+        const site = sitesCache.find(s => s.id === icon.dataset.id);
+        if (site) openModal(site);
+      }
+      // Hors mode édition, le vrai lien <a target="_blank"> s'ouvre directement.
+      // C'est plus fiable sur mobile qu'une redirection JavaScript.
     });
 
     // ── Supprimer ──
