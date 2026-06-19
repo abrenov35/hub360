@@ -395,7 +395,7 @@
         if (site) openModal(site);
       } else {
         const url = normalizeUrl(icon.dataset.url);
-        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+        if (url) { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
       }
     });
 
