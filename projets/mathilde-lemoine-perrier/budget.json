@@ -1,17 +1,19 @@
 {
-  "version": 1,
+  "version": 3,
   "maj": "29 octobre 2026",
-  "statut": "Budget indicatif — devis de prestations en attente",
+  "statut": "Projet en attente du retour Quéguiner ; devis AB RENOV 35 à finaliser après choix et prix des produits",
   "enveloppeRenovation": 20000,
   "cuisineDiscaC": 6400.57,
   "leroyMerlin": 2809.53,
   "electromenagerExtra": 1849.5,
-  "budgetTtcElectroSeparation": true,
+  "budgetTtcElectroSeparation": false,
   "notes": [
-    "Cuisine DISCAC : base indicative hors pose, prix de vente commercial à valider.",
-    "Leroy Merlin : montant facturé retenu avec TVA offerte, achats détaillés et statuts à confirmer.",
-    "Électroménager Extra : sélection du 29 octobre ; anciennes hotte et machine remplacées.",
-    "Le solde disponible n'intègre pas la salle de bains, la pose de la cuisine, la pose du parquet, les sous-couches et les plinthes."
+    "Budget TTC maximal de 20 000 € : cuisine DISCAC, Leroy Merlin et électroménager Extra inclus.",
+    "Base cuisine indicative hors pose ; le prix de vente reste à valider.",
+    "AB RENOV 35 attend les références et le devis de Quéguiner sur sanitaires, carrelage et faïence.",
+    "Les clients se chargent de la dépose et évacuation des sols et de la cuisine existante ; la dépose du meuble vasque est également recommandée.",
+    "Les adaptations des réseaux, la fourniture et pose des sanitaires, du carrelage et de la faïence, la pose des sols et des plinthes restent à chiffrer par AB RENOV 35.",
+    "Solde théorique de 8 940,40 € avant les prestations restant à chiffrer."
   ],
   "prixParReference": {
     "86163569": 100,
@@ -23,11 +25,42 @@
     "AHG560BK": 199.9
   },
   "travauxManquants": [
-    "Pose cuisine et intégrations techniques",
-    "Salle de bains définitive, hors meuble vasque déjà prévu chez Leroy Merlin",
-    "Pose du parquet",
-    "Sous-couche, plinthes et seuils",
-    "Faïence, crédence, nouveau sol salle de bains",
-    "Adaptations plomberie / électricité et finitions"
-  ]
+    "Retour Quéguiner (choix sanitaires, carrelage et faïence et devis)",
+    "Devis AB RENOV 35 : fourniture et pose carrelage/faïence",
+    "Devis AB RENOV 35 : sanitaires fourniture et pose",
+    "Devis AB RENOV 35 : adaptation réseaux",
+    "Devis AB RENOV 35 : pose de tous les revêtements de sols, sous-couche et plinthes",
+    "Pose cuisine et contraintes techniques, à définir"
+  ],
+  "electromenagerComprisDansBudget": true,
+  "plafondStrict": true,
+  "resteDisponible": 8940.4,
+  "suiviFournisseurs": {
+    "Quéguiner": {
+      "statut": "En attente de réponse",
+      "postes": [
+        "Choix et devis sanitaires",
+        "Carrelage",
+        "Faïence"
+      ],
+      "impact": "Conditionne le chiffrage définitif AB RENOV 35"
+    },
+    "AB RENOV 35": {
+      "statut": "Devis à finaliser après réception des choix et chiffrage Quéguiner"
+    }
+  },
+  "repartitionTravaux": {
+    "AB RENOV 35": [
+      "Fourniture et pose du carrelage et de la faïence de salle de bains",
+      "Fourniture et pose des sanitaires",
+      "Adaptation des réseaux d'eau et d'évacuation",
+      "Pose de l'ensemble des revêtements de sol et des plinthes"
+    ],
+    "Clients": [
+      "Dépose et évacuation des sols existants avant travaux",
+      "Dépose et évacuation de la cuisine existante avant travaux",
+      "Dans la mesure du possible, dépose et évacuation du meuble de salle de bains pour limiter les coûts de main-d'œuvre et manutention"
+    ],
+    "precaution": "Travaux préparatoires à coordonner avec AB RENOV 35 ; les déconnexions techniques des réseaux d'eau et d'électricité doivent être sécurisées par un professionnel qualifié. Les économies éventuelles seront répercutées après révision du devis."
+  }
 }
