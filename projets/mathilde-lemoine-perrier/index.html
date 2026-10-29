@@ -33,7 +33,7 @@ a{color:inherit}button{font:inherit;cursor:pointer}img{display:block;width:100%}
 <body>
 <header class="header"><div class="header-inner"><div class="brand">AB RENOV 35<small>RÉNOVATION INTÉRIEURE</small></div><div class="header-right"><span>Votre espace projet</span><button class="share" id="share" type="button">Partager le lien</button></div></div></header>
 <main>
-<section class="hero" id="accueil"><div><div class="eyebrow">Appartement · Rennes</div><h1>Mathilde Lemoine<br>& Bastien Perrier</h1><p class="lede">Bienvenue dans votre suivi de rénovation. Retrouvez les choix de matériaux, les équipements retenus, le budget indicatif et les décisions à venir, au même endroit.</p></div><div class="hero-note"><div class="caps">Dernière actualisation</div><div class="date" id="updated">29 octobre 2026</div><span>Ce dossier évolue au fil des choix, des devis et des validations.</span></div></section>
+<section class="hero" id="accueil"><div><div class="eyebrow">Appartement · Rennes</div><h1>Mathilde Lemoine<br>& Bastien Perrier</h1><p class="lede">Bienvenue dans votre suivi de rénovation. Retrouvez les choix de matériaux, les équipements retenus, le budget indicatif et les décisions à venir, au même endroit.</p></div><div class="hero-note"><div class="caps">Dernière actualisation</div><div class="date" id="updated">29 octobre 2026</div><span>Ce dossier évolue au fil des choix, des devis et des validations. Les montants sont ceux du suivi budgétaire commun.</span></div></section>
 <nav class="nav" aria-label="Navigation du projet"><a href="#accueil">Vue d'ensemble</a><a href="#cuisine">Cuisine</a><a href="#produits">Produits choisis</a><a href="#travaux">Prestations</a><a href="#budget">Budget</a><a href="#suivi">Historique</a></nav>
 <section class="cards" aria-label="Indicateurs financiers"><article class="metric accent"><div class="caps">Enveloppe rénovation</div><strong id="budget-ceiling">20 000 €</strong><div class="hint">Électroménager non inclus</div></article><article class="metric"><div class="caps">Cuisine – base indicative</div><strong id="kitchen-value">6 400,57 €</strong><div class="hint">Prix commercial définitif à confirmer</div></article><article class="metric"><div class="caps">Leroy Merlin</div><strong id="leroy-value">2 809,53 €</strong><div class="hint">Montant retenu, TVA offerte</div></article><article class="metric"><div class="caps">Électroménager Extra</div><strong id="extra-value">1 849,50 €</strong><div class="hint">Budget séparé, TTC</div></article></section>
 <section class="section" id="cuisine"><div class="section-head"><div><div class="eyebrow">01 / Aménagement</div><h2>La cuisine</h2><p>Une composition DISCAC dans un esprit chaleureux et contemporain, adaptée à l'appartement.</p></div><span class="tag validation">Étude technique en cours</span></div>
@@ -41,7 +41,7 @@ a{color:inherit}button{font:inherit;cursor:pointer}img{display:block;width:100%}
 <section class="section" id="produits"><div class="section-head"><div><div class="eyebrow">02 / Sélections</div><h2>Les produits du projet</h2><p>Les références choisies, leurs visuels disponibles et leurs fiches chez les fournisseurs. Les photos proviennent de sites marchands ou fabricants ; certains articles restent illustrés par un pictogramme.</p></div></div>
 <div class="filterbar" id="filters"><button class="filter" type="button" data-filter="tout" aria-pressed="true">Tous</button><button class="filter" type="button" data-filter="leroy" aria-pressed="false">Leroy Merlin</button><button class="filter" type="button" data-filter="extra" aria-pressed="false">Extra</button></div><div class="product-grid" id="products"></div><div class="info-box">Les prix affichés servent au suivi budgétaire du projet et ne constituent pas une confirmation de commande, de disponibilité ou de livraison. Les sites marchands peuvent actualiser leurs tarifs.</div></section>
 <section class="section" id="travaux"><div class="section-head"><div><div class="eyebrow">03 / Prestations</div><h2>À réaliser et à chiffrer</h2><p>Les postes encore à étudier avant de stabiliser le budget de l'ensemble de la rénovation.</p></div></div><div class="works" id="works"></div><div class="info-box"><strong>Salle de bains :</strong> une première estimation du 12 octobre de 7 014 € HT existe, mais elle ne reflète plus les choix actuels (meuble acheté séparément, abandon du sol vinyle). Elle n'est donc pas additionnée au budget affiché pour éviter les doublons.</div></section>
-<section class="section" id="budget"><div class="section-head"><div><div class="eyebrow">04 / Suivi financier</div><h2>Point budget</h2><p>Situation indicative au 29 octobre. Le montant définitif dépend encore des devis de prestations et de la validation du prix de vente cuisine.</p></div></div><div class="budget-layout"><div class="panel budget-panel"><div class="two"><h3>Enveloppe rénovation</h3><span class="tag info">Provisoire</span></div><div class="bar" aria-hidden="true"><span class="k"></span><span class="l"></span><span class="r"></span></div><div class="legend"><span><i style="background:#7b8e9d"></i>Cuisine – base</span><span><i style="background:#c39060"></i>Leroy Merlin</span><span><i style="background:#e9e7e3;border:1px solid #d2d2ce"></i>À affecter</span></div><div class="budget-line"><span>Cuisine DISCAC, base indicative hors pose</span><b>6 400,57 €</b></div><div class="budget-line"><span>Leroy Merlin, TVA offerte</span><b>2 809,53 €</b></div><div class="budget-line tot"><span>Base actuellement prise en compte</span><b>9 210,10 €</b></div><div class="budget-line"><span>Solde théorique à affecter</span><b>10 789,90 €</b></div><p class="small" style="margin:13px 0 0">Le solde affiché n'est pas une économie réalisée. La cuisine est fondée sur une estimation non validée commercialement, les autres travaux ne sont pas intégrés.</p></div><div class="panel budget-panel"><div class="caps">Budget distinct</div><h3 style="margin:8px 0 5px">Électroménager</h3><div class="budget-line"><span>Four Beko</span><b>299,90 €</b></div><div class="budget-line"><span>Lave-vaisselle Whirlpool</span><b>449,90 €</b></div><div class="budget-line"><span>Micro-ondes Samsung</span><b>299,90 €</b></div><div class="budget-line"><span>Lave-linge séchant Candy</span><b>599,90 €</b></div><div class="budget-line"><span>Hotte Airlux</span><b>199,90 €</b></div><div class="budget-line tot"><span>Total TTC</span><b>1 849,50 €</b></div><p class="small" style="margin-top:12px">Sélection révisée le 29 octobre : l'ancienne hotte et l'ancien lave-linge ne sont pas comptés deux fois.</p></div></div></section>
+<section class="section" id="budget"><div class="section-head"><div><div class="eyebrow">04 / Suivi financier</div><h2>Point budget</h2><p>Situation indicative au 29 octobre. Le montant définitif dépend encore des devis de prestations et de la validation du prix de vente cuisine.</p></div></div><div class="budget-layout"><div class="panel budget-panel"><div class="two"><h3>Enveloppe rénovation</h3><span class="tag info">Provisoire</span></div><div class="bar" id="budget-progress" aria-hidden="true"><span class="k"></span><span class="l"></span><span class="r"></span></div><div class="legend"><span><i style="background:#7b8e9d"></i>Cuisine – base</span><span><i style="background:#c39060"></i>Leroy Merlin</span><span><i style="background:#e9e7e3;border:1px solid #d2d2ce"></i>À affecter</span></div><div class="budget-line"><span>Cuisine DISCAC, base indicative hors pose</span><b id="budget-cuisine">6 400,57 €</b></div><div class="budget-line"><span>Leroy Merlin, TVA offerte</span><b id="budget-leroy">2 809,53 €</b></div><div class="budget-line tot"><span>Base actuellement prise en compte</span><b id="budget-consomme">9 210,10 €</b></div><div class="budget-line"><span>Solde théorique à affecter</span><b id="budget-reste">10 789,90 €</b></div><p class="small" style="margin:13px 0 0">Le solde affiché n'est pas une économie réalisée. La cuisine est fondée sur une estimation non validée commercialement, les autres travaux ne sont pas intégrés.</p></div><div class="panel budget-panel"><div class="caps">Budget distinct</div><h3 style="margin:8px 0 5px">Électroménager</h3><div class="budget-line"><span>Four Beko</span><b>299,90 €</b></div><div class="budget-line"><span>Lave-vaisselle Whirlpool</span><b>449,90 €</b></div><div class="budget-line"><span>Micro-ondes Samsung</span><b>299,90 €</b></div><div class="budget-line"><span>Lave-linge séchant Candy</span><b>599,90 €</b></div><div class="budget-line"><span>Hotte Airlux</span><b>199,90 €</b></div><div class="budget-line tot"><span>Total TTC</span><b id="budget-extra">1 849,50 €</b></div><p class="small" style="margin-top:12px">Sélection révisée le 29 octobre : l'ancienne hotte et l'ancien lave-linge ne sont pas comptés deux fois.</p></div></div></section>
 <section class="section" id="suivi"><div class="section-head"><div><div class="eyebrow">05 / Historique</div><h2>Dernières décisions</h2><p>Ce journal permet de comprendre ce qui change d'une version du projet à l'autre.</p></div></div><div class="timeline" id="timeline"></div></section>
 </main>
 <footer class="footer"><div class="footer-wrap"><div><strong>AB RENOV 35</strong><p>Rénovation intérieure · Rennes et sa région</p></div><div style="max-width:440px"><p>Document de suivi évolutif, non contractuel. Seuls les devis acceptés et documents contractuels engagent les parties.</p><p>Page consultable par toute personne disposant de son adresse.</p></div></div></footer>
@@ -92,6 +92,49 @@ document.querySelectorAll(".filter").forEach(button=>button.addEventListener("cl
 document.getElementById("works").innerHTML=data.works.map(w=>'<article class="work"><span class="tag attente">'+escapeHtml(w[2])+'</span><h3>'+escapeHtml(w[0])+'</h3><p>'+escapeHtml(w[1])+'</p></article>').join("");
 document.getElementById("timeline").innerHTML=data.timeline.map(e=>'<div class="event"><time>'+escapeHtml(e[0])+'</time><h3>'+escapeHtml(e[1])+'</h3><p>'+escapeHtml(e[2])+'</p></div>').join("");
 document.getElementById("share").addEventListener("click",async()=>{try{if(navigator.share)await navigator.share({title:document.title,url:location.href});else{await navigator.clipboard.writeText(location.href);alert("Lien copié.")}}catch(e){}});
+
+/* Données budgétaires partagées : un seul fichier de référence pour le portail et le suivi AB RENOV 35. */
+async function chargerBudget(){
+ const urls=["./budget.json?maj="+Date.now(),
+  "https://raw.githubusercontent.com/abrenov35/hub360/main/projets/mathilde-lemoine-perrier/budget.json?maj="+Date.now()];
+ for(const url of urls){
+  try{
+   const res=await fetch(url,{cache:"no-store"});
+   if(!res.ok)continue;
+   const b=await res.json();
+   if(!Number.isFinite(b.enveloppeRenovation)||!Number.isFinite(b.cuisineDiscaC)||!Number.isFinite(b.leroyMerlin)||!Number.isFinite(b.electromenagerExtra))continue;
+   const reste=b.enveloppeRenovation-b.cuisineDiscaC-b.leroyMerlin;
+   data.updated=b.maj||data.updated;
+   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=eur(val)};
+   document.getElementById("updated").textContent=data.updated;
+   set("budget-ceiling",b.enveloppeRenovation);
+   set("kitchen-value",b.cuisineDiscaC);
+   set("leroy-value",b.leroyMerlin);
+   set("extra-value",b.electromenagerExtra);
+   set("budget-cuisine",b.cuisineDiscaC);
+   set("budget-leroy",b.leroyMerlin);
+   set("budget-consomme",b.cuisineDiscaC+b.leroyMerlin);
+   set("budget-reste",reste);
+   set("budget-extra",b.electromenagerExtra);
+   const progress=document.getElementById("budget-progress");
+   if(progress){
+    progress.querySelector(".k").style.width=Math.min(100,Math.max(0,100*b.cuisineDiscaC/b.enveloppeRenovation))+"%";
+    progress.querySelector(".l").style.width=Math.min(100,Math.max(0,100*b.leroyMerlin/b.enveloppeRenovation))+"%";
+   }
+   if(b.prixParReference&&typeof b.prixParReference==="object"){
+    for(const p of data.products)if(Object.hasOwn(b.prixParReference,p.ref)&&typeof b.prixParReference[p.ref]==="number")p.price=b.prixParReference[p.ref];
+    const f=document.querySelector('.filter[aria-pressed="true"]');
+    renderProducts(f?f.dataset.filter:"tout");
+    const extraRefs=["BBIE12100XD","W3IFD536","MS20A7013AB","BC4S485M4D8-S","AHG560BK"];
+    const lines=document.querySelectorAll("#budget .budget-layout .panel:last-child .budget-line");
+    extraRefs.forEach((ref,i)=>{if(lines[i]){const n=b.prixParReference[ref];if(typeof n==="number")lines[i].querySelector("b").textContent=eur(n)}});
+   }
+   return;
+  }catch(err){/* la page conserve sa dernière version intégrée */ }
+ }
+}
+chargerBudget();
+
 </script>
 </body>
 </html>
