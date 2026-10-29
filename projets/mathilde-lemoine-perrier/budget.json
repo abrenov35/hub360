@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "maj": "29 octobre 2026",
+  "statut": "Budget indicatif — devis de prestations en attente",
+  "enveloppeRenovation": 20000,
+  "cuisineDiscaC": 6400.57,
+  "leroyMerlin": 2809.53,
+  "electromenagerExtra": 1849.5,
+  "budgetTtcElectroSeparation": true,
+  "notes": [
+    "Cuisine DISCAC : base indicative hors pose, prix de vente commercial à valider.",
+    "Leroy Merlin : montant facturé retenu avec TVA offerte, achats détaillés et statuts à confirmer.",
+    "Électroménager Extra : sélection du 29 octobre ; anciennes hotte et machine remplacées.",
+    "Le solde disponible n'intègre pas la salle de bains, la pose de la cuisine, la pose du parquet, les sous-couches et les plinthes."
+  ],
+  "prixParReference": {
+    "86163569": 100,
+    "95573753": 62.42,
+    "BBIE12100XD": 299.9,
+    "W3IFD536": 449.9,
+    "MS20A7013AB": 299.9,
+    "BC4S485M4D8-S": 599.9,
+    "AHG560BK": 199.9
+  },
+  "travauxManquants": [
+    "Pose cuisine et intégrations techniques",
+    "Salle de bains définitive, hors meuble vasque déjà prévu chez Leroy Merlin",
+    "Pose du parquet",
+    "Sous-couche, plinthes et seuils",
+    "Faïence, crédence, nouveau sol salle de bains",
+    "Adaptations plomberie / électricité et finitions"
+  ]
+}
