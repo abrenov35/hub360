@@ -1,0 +1,130 @@
+name: Intégrer les visuels Xavier
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/finish-xavier-product-visuals.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Finaliser les photos et la page
+        shell: python
+        run: |
+          import hashlib, json, pathlib, re, urllib.request
+          from html.parser import HTMLParser
+          from urllib.parse import urljoin
+          root=pathlib.Path('projets/xavier-labigang')
+          manifest=json.loads((root/'images/sources.json').read_text())
+          products={p['model']:p for p in manifest['products']}
+          source='https://www.megdiffusion.fr/vente/aeg/aeg-te7g9cbs-seche-linge-pompe-a-chaleur-9kg-sensidry/'
+          def get(url):
+              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (compatible; AB-Renov-product-images/1.0)'})
+              with urllib.request.urlopen(req,timeout=30) as r: return r.read(),r.headers.get_content_type(),r.geturl()
+          class Gallery(HTMLParser):
+              def __init__(self): super().__init__(); self.og=[]; self.images=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='meta' and a.get('property',a.get('name','')) in ('og:image','twitter:image'):
+                      self.og.append(a.get('content',''))
+                  if tag=='img':
+                      for key in ('data-large_image','data-src','src'):
+                          if a.get(key): self.images.append(a[key])
+          raw,mime,final_page=get(source)
+          text=raw.decode('utf-8',errors='replace')
+          assert 'TE7G9CBS' in text.upper(), 'Fiche AEG incorrecte'
+          doc=Gallery();doc.feed(text)
+          candidates=list(dict.fromkeys([u for u in doc.images if 'te7g9cbs' in u.lower() and not any(s in u.lower() for s in ('label','etiquette','energy','promo','odr'))]+doc.og))
+          assert candidates, 'Aucune photo AEG sans promotion trouvée'
+          replacement=None
+          for candidate in candidates:
+              try:
+                  data,mime,image_url=get(urljoin(final_page,candidate))
+                  if data.startswith(b'\xff\xd8\xff'): ext='jpg'
+                  elif data.startswith(b'\x89PNG\r\n\x1a\n'): ext='png'
+                  elif data.startswith(b'RIFF') and data[8:12]==b'WEBP': ext='webp'
+                  else: continue
+                  assert len(data)>1500
+                  filename='te7g9cbs-clean.'+ext
+                  (root/'images'/filename).write_bytes(data)
+                  replacement={'model':'TE7G9CBS','file':filename,'source_page':final_page,'source_image':image_url,'mime_type':mime,'size_bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+                  break
+              except Exception as exc: print('Candidat AEG refusé :',str(exc))
+          assert replacement, 'Photo AEG non récupérée'
+          old_name=products['TE7G9CBS']['file']
+          products['TE7G9CBS']=replacement
+          if old_name != replacement['file']: (root/'images'/old_name).unlink(missing_ok=True)
+          manifest['products']=list(products.values())
+          (root/'images/sources.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+          page=root/'variante-seche-linge.html'
+          content=page.read_text(encoding='utf-8')
+          assert 'data-revision="electrolux-capture-20261030-v2"' in content, 'La page a changé, ne pas écraser'
+          before_pdfs=re.findall(r'href="([^"]+\.pdf)"',content)
+          before_amounts=re.findall(r'data-amount-cents="(\d+)"',content)
+          def photo(model,label):
+              p=products[model]
+              return '<figure class="product-visual"><a href="images/'+p['file']+'" target="_blank" rel="noopener" aria-label="Agrandir la photo '+label+'"><img src="images/'+p['file']+'" alt="'+label+'" data-model="'+model+'" loading="lazy" decoding="async" width="640" height="640"></a><figcaption>Cliquer sur la photo pour agrandir</figcaption></figure>'
+          aeg='<h3 id="aeg-titre">'
+          electrolux='<h3 id="electrolux-titre">'
+          hob='<article class="product hob" aria-labelledby="plaque-titre">'
+          for anchor in (aeg,electrolux,hob): assert content.count(anchor)==1, 'Emplacement non unique : '+anchor
+          content=content.replace(aeg,photo('TE7G9CBS','Sèche-linge AEG TE7G9CBS')+aeg)
+          content=content.replace(electrolux,photo('EW6H913SO','Sèche-linge Electrolux EW6H913SO')+electrolux)
+          content=content.replace(hob,hob+photo('TI64IB10IZ','Plaque induction AEG TI64IB10IZ'))
+          original='<article class="product initial-model" id="seche-linge-initial" aria-labelledby="initial-titre"><div class="badges"><span class="badge unavailable">Modèle initial · Indisponible</span></div>'+photo('TR729EC4PB','Sèche-linge AEG TR729EC4PB')+'<h3 id="initial-titre">Sèche-linge AEG</h3><div class="model">TR729EC4PB</div><div class="specs"><span>9 kg</span><span>Pompe à chaleur</span></div><p>Modèle initial conservé pour comparaison. Indisponible dans le dossier : les deux modèles suivants sont proposés en remplacement.</p><div class="priceblock"><div class="unavailable-price">Indisponible</div><div class="breakdown">Non inclus dans les combinaisons à valider.</div></div></article>'
+          assert content.count('<div class="cards">')==1
+          content=content.replace('<div class="cards">','<div class="cards">\n'+original+'\n')
+          content=content.replace('data-revision="electrolux-capture-20261030-v2"','data-revision="visuels-quatre-produits-20261030-v3"')
+          content=content.replace('FICHE ELECTROLUX ACTUALISÉE','VISUELS DES 4 APPAREILS AJOUTÉS')
+          content=content.replace('Deux équipements à valider : un sèche-linge, avec deux possibilités, et une plaque induction. Prix HT, écoparticipation incluse.','Trois sèche-linge présentés : le modèle initial indisponible et ses deux alternatives. La plaque induction reste à valider séparément. Prix HT, écoparticipation incluse.')
+          content=content.replace('Les deux sèche-linge sont des alternatives : aucun des trois appareils n’est ajouté au montant des achats avant validation et commande.','Un seul sèche-linge sera retenu parmi les deux alternatives au modèle initial indisponible. Aucun équipement proposé n’est ajouté aux achats avant validation et commande.')
+          content=content.replace('Proposition initiale · À valider','Alternative AEG · À valider')
+          note='Photos des références exactes issues des fiches constructeur et distributeur. Visuels non contractuels ; les prix HT convenus dans ce suivi restent inchangés.'
+          content=content.replace('Fiche Electrolux actualisée à partir de la dernière capture fournisseur transmise ; une seule fiche par référence.','Fiche Electrolux actualisée à partir de la dernière capture fournisseur transmise ; une seule fiche par référence. '+note)
+          event='<div class="event"><time datetime="2026-10-30">30 octobre 2026</time><p><strong>Les quatre visuels sont ajoutés.</strong> <span>Photos de la plaque AEG et des trois sèche-linge, agrandissables en un clic. Le modèle initial reste signalé comme indisponible. Prix et justificatifs inchangés.</span></p></div>'
+          content=content.replace('<div class="timeline">','<div class="timeline">'+event,1)
+          css='''
+          .product-visual{margin:18px 0 12px;min-width:0;text-align:center;background:#fff}
+          .product-visual a{display:flex;align-items:center;justify-content:center;height:260px;border-radius:7px;overflow:hidden;background:white}
+          .product-visual img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
+          .product-visual figcaption{font-size:10px;color:var(--muted);margin-top:6px}
+          .unavailable{color:#53605b;background:#e8eae7}
+          .unavailable-price{font-size:25px;line-height:1.4;font-weight:750;color:var(--muted)}
+          .initial-model{border-style:dashed}
+          .hob{grid-template-columns:220px minmax(0,1fr) auto}
+          .hob .product-visual{margin:0}
+          .hob .product-visual a{height:210px}
+          @media(min-width:900px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.cards .product{padding:21px}.cards .variant{padding:20px}}
+          @media(min-width:721px) and (max-width:899px){.hob{grid-template-columns:180px minmax(0,1fr)}.hob .priceblock{grid-column:2;text-align:left}.cards .initial-model{grid-column:1/-1}}
+          @media(max-width:720px){.hob{display:flex;flex-direction:column}.hob .product-visual{width:100%}.hob .product-visual a{height:230px}.cards .product-visual a{height:290px}}
+          @media print{.product-visual a{height:170px}.product-visual figcaption{display:none}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.hob{grid-template-columns:150px minmax(0,1fr) auto}.hob .product-visual a{height:150px}}
+          '''
+          content=content.replace('</style>',css+'\n</style>',1)
+          assert re.findall(r'href="([^"]+\.pdf)"',content)==before_pdfs
+          assert re.findall(r'data-amount-cents="(\d+)"',content)==before_amounts
+          assert len(re.findall(r'<img ',content))==4
+          for model,p in products.items(): assert ('images/'+p['file']) in content
+          for value in ('468,20','394,15','371,90','954,35','840,10','766,05'): assert value in content
+          page.write_text(content,encoding='utf-8')
+          print('VISUELS ET PAGE PRÊTS',json.dumps(manifest,ensure_ascii=False))
+      - name: Publier la modification ciblée
+        run: |
+          git config user.name 'AB RENOV 35'
+          git config user.email 'abrenov35@users.noreply.github.com'
+          git add projets/xavier-labigang/variante-seche-linge.html projets/xavier-labigang/images/
+          git commit -m 'Xavier : photos de la plaque et des trois sèche-linge, prix et PDF conservés'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Préparer le contrôle de la page
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xavier-site-avec-visuels
+          path: |
+            projets/xavier-labigang/variante-seche-linge.html
+            projets/xavier-labigang/images/
+          retention-days: 2
