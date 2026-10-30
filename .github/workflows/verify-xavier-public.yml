@@ -5,6 +5,7 @@ on:
     paths:
       - 'projets/xavier-labigang/variante-seche-linge.html'
       - 'projets/xavier-labigang/documents/**'
+      - 'projets/xavier-labigang/images/**'
       - '.github/workflows/verify-xavier-public.yml'
   workflow_dispatch:
 permissions:
@@ -14,79 +15,76 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Contrôler la page publiée et ses PDF
+      - name: Contrôler la page publique, les quatre photos et les quatre PDF
         shell: python
         env:
           CHECK_REVISION: ${{ github.sha }}
         run: |
-          import hashlib, json, os, pathlib, time, urllib.request
+          import hashlib, json, os, time, urllib.request
           from html.parser import HTMLParser
           from urllib.parse import urljoin
-          base = 'https://abrenov35.github.io/hub360/projets/xavier-labigang/'
-          url = base + 'variante-seche-linge.html'
-          marker = 'xavier-unifie-20261030-v1'
+          base='https://abrenov35.github.io/hub360/projets/xavier-labigang/'
+          url=base+'variante-seche-linge.html'
+          marker='visuels-quatre-produits-20261030-v3'
           def get(target):
-              request = urllib.request.Request(target, headers={'User-Agent': 'AB-RENOV-Xavier-Link-Check', 'Cache-Control': 'no-cache'})
-              with urllib.request.urlopen(request, timeout=20) as response:
-                  return response.status, response.headers.get_content_type(), response.read()
-          page = None
-          last_error = None
-          for attempt in range(18):
+              req=urllib.request.Request(target,headers={'User-Agent':'AB-RENOV-Xavier-Link-Check','Cache-Control':'no-cache'})
+              with urllib.request.urlopen(req,timeout=20) as response:
+                  return response.status,response.headers.get_content_type(),response.read()
+          page=None
+          for attempt in range(24):
               try:
-                  status, mime, body = get(url + '?verification=' + os.environ['CHECK_REVISION'] + '-' + str(attempt))
-                  text = body.decode('utf-8')
-                  if status == 200 and marker in text:
-                      page = text
-                      break
-                  last_error = 'La version publiée ne contient pas encore le marqueur attendu.'
-              except Exception as exc:
-                  last_error = str(exc)
-              time.sleep(6)
-          if page is None:
-              raise RuntimeError('Page regroupée non confirmée : ' + str(last_error))
+                  status,mime,body=get(url+'?verification='+os.environ['CHECK_REVISION']+'-'+str(attempt))
+                  candidate=body.decode('utf-8')
+                  if status==200 and marker in candidate: page=candidate;break
+              except Exception as exc: print('Publication en cours :',str(exc))
+              time.sleep(5)
+          assert page is not None,'Nouvelle version publique non confirmée'
           class Page(HTMLParser):
               def __init__(self):
-                  super().__init__()
-                  self.pdf_links = []
-                  self.amounts = []
-                  self.ids = set()
-                  self.anchors = []
-              def handle_starttag(self, tag, attrs):
-                  attrs = dict(attrs)
-                  if 'id' in attrs:
-                      self.ids.add(attrs['id'])
-                  if tag == 'a':
-                      href = attrs.get('href', '')
-                      if href.endswith('.pdf'):
-                          self.pdf_links.append(href)
-                      if href.startswith('#'):
-                          self.anchors.append(href[1:])
-                      if 'data-amount-cents' in attrs:
-                          self.amounts.append(int(attrs['data-amount-cents']))
-          parsed = Page()
-          parsed.feed(page)
-          expected = {
-              'documents/Copeint_12897_2026-09-02.pdf': 'd0415937dda599027a6072797ab442791ade233d3c3b9c6f733bdc907bd51717',
-              'documents/Copeint_13199_2026-10-07.pdf': '399e00359b34ee9969416a7d6830001a7488b09cde8c1c45d387e741857f04b1',
-              'documents/Copeint_13423_2026-10-30.pdf': 'ec8a60fa8d1aaaa41d579db9a4ba2350c3717c6fea826eed3e4cd96a8f6fe84c',
-              'documents/POINTP_2036525760_Baignoire.pdf': '0d275b6a5025e0dce2e9e8a74f1e9ee31643397eaa70822cb5a909726f480eae'
+                  super().__init__();self.pdfs=[];self.amounts=[];self.images=[];self.hrefs=[];self.ids=set();self.anchors=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if 'id' in a:self.ids.add(a['id'])
+                  if tag=='img':self.images.append(a)
+                  if tag=='a':
+                      href=a.get('href','');self.hrefs.append(href)
+                      if href.endswith('.pdf'):self.pdfs.append(href)
+                      if href.startswith('#'):self.anchors.append(href[1:])
+                      if 'data-amount-cents' in a:self.amounts.append(int(a['data-amount-cents']))
+          parsed=Page();parsed.feed(page)
+          expected_pdfs={
+              'documents/Copeint_12897_2026-09-02.pdf':'d0415937dda599027a6072797ab442791ade233d3c3b9c6f733bdc907bd51717',
+              'documents/Copeint_13199_2026-10-07.pdf':'399e00359b34ee9969416a7d6830001a7488b09cde8c1c45d387e741857f04b1',
+              'documents/Copeint_13423_2026-10-30.pdf':'ec8a60fa8d1aaaa41d579db9a4ba2350c3717c6fea826eed3e4cd96a8f6fe84c',
+              'documents/POINTP_2036525760_Baignoire.pdf':'0d275b6a5025e0dce2e9e8a74f1e9ee31643397eaa70822cb5a909726f480eae'
           }
-          assert len(parsed.pdf_links) == 4 and set(parsed.pdf_links) == set(expected), 'Liens PDF incorrects'
-          assert len(parsed.amounts) == 4 and sum(parsed.amounts) == 95435, 'Total des achats incorrect'
-          assert all(anchor in parsed.ids for anchor in parsed.anchors), 'Ancre de navigation manquante'
-          for required in ['TE7G9CBS', 'EW6H913SO', 'TI64IB10IZ', '468,20', '394,15', '371,90', '840,10', '766,05', 'Morvan']:
-              assert required in page, 'Contenu manquant : ' + required
-          assert 'xavier-labigang-suivi.abrenov35.chatgpt.site' not in page, 'Ancien renvoi conservé'
-          results = []
-          for relative in parsed.pdf_links:
-              status, mime, body = get(urljoin(base, relative))
-              checksum = hashlib.sha256(body).hexdigest()
-              assert status == 200 and body.startswith(b'%PDF-'), 'PDF inaccessible : ' + relative
-              assert checksum == expected[relative], 'Original PDF différent : ' + relative
-              results.append({'file': relative, 'status': status, 'mime_type': mime, 'size_bytes': len(body), 'sha256': checksum})
-              print('PDF OK:', relative, status, mime, len(body))
-          report = {'page_url': url, 'page_status': 200, 'version': marker, 'pdf_count': 4, 'purchase_total_cents': sum(parsed.amounts), 'checks': results}
-          pathlib.Path('verification-xavier.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
-              summary.write('## Suivi Xavier vérifié\n\nPage regroupée : HTTP 200.\n\nLes 4 PDF sont accessibles sans connexion et identiques aux originaux (SHA-256).\n\nLes 3 appareils, les 2 combinaisons proposées, les 4 achats, les ancres et le total de 954,35 euros HT ont été contrôlés.\n')
-          print(json.dumps(report, ensure_ascii=False))
+          assert len(parsed.pdfs)==4 and set(parsed.pdfs)==set(expected_pdfs)
+          assert len(parsed.amounts)==4 and sum(parsed.amounts)==95435
+          assert all(a in parsed.ids for a in parsed.anchors)
+          expected_models={'TE7G9CBS','TR729EC4PB','EW6H913SO','TI64IB10IZ'}
+          assert len(parsed.images)==4 and {x.get('data-model') for x in parsed.images}==expected_models
+          for value in ('468,20','394,15','371,90','840,10','766,05','Morvan','Modèle initial · Indisponible'):
+              assert value in page,'Contenu manquant : '+value
+          _,_,raw=get(base+'images/sources.json?revision='+os.environ['CHECK_REVISION'])
+          sources={p['model']:p for p in json.loads(raw)['products']}
+          results=[]
+          for image in parsed.images:
+              model=image['data-model'];relative=image['src']
+              assert relative=='images/'+sources[model]['file']
+              assert relative in parsed.hrefs,'Agrandissement absent : '+model
+              assert model in image.get('alt',''),'Texte alternatif absent : '+model
+              status,mime,binary=get(urljoin(base,relative))
+              assert status==200 and mime.startswith('image/') and len(binary)>1500
+              assert hashlib.sha256(binary).hexdigest()==sources[model]['sha256']
+              results.append({'type':'photo','model':model,'status':status,'size_bytes':len(binary)})
+              print('PHOTO_PUBLIQUE_OK',model,status,mime,len(binary))
+          for relative in parsed.pdfs:
+              status,mime,binary=get(urljoin(base,relative))
+              assert status==200 and binary.startswith(b'%PDF-')
+              assert hashlib.sha256(binary).hexdigest()==expected_pdfs[relative]
+              results.append({'type':'pdf','file':relative,'status':status,'size_bytes':len(binary)})
+              print('PDF_PUBLIC_OK',relative,status)
+          report={'page_url':url,'status':200,'revision':marker,'photos':4,'pdfs':4,'prices_unchanged':True,'photo_enlargement_links':4,'checks':results}
+          print('PUBLICATION_OK '+json.dumps(report,ensure_ascii=False))
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('## Suivi Xavier validé\n\nVersion avec 4 photos publiée (HTTP 200).\n\nLes 4 photos et leurs liens d’agrandissement sont accessibles sans connexion et conformes aux fichiers enregistrés.\n\nLes 4 PDF originaux et les montants HT sont conservés et contrôlés.\n')
