@@ -15,16 +15,16 @@ jobs:
       - name: Télécharger les photos des références exactes
         shell: python
         run: |
-          import concurrent.futures, hashlib, json, pathlib, re, urllib.request
+          import concurrent.futures, hashlib, json, pathlib, urllib.request
           from html.parser import HTMLParser
-          from urllib.parse import urljoin, urlparse
+          from urllib.parse import urljoin
           target = pathlib.Path('projets/xavier-labigang/images')
           target.mkdir(parents=True, exist_ok=True)
           products = {
-            'TE7G9CBS': ['https://www.extra.fr/p-seche-linge-te7g9cbs'],
-            'TR729EC4PB': ['https://www.extra.fr/p-seche-linge-tr729ec4pb'],
-            'TI64IB10IZ': ['https://www.extra.fr/p-table-induction-ti64ib10iz'],
-            'EW6H913SO': ['https://www.extra.fr/p-seche-linge-ew6h913so', 'https://brico-travo.com/electro-menager/540662-electrolux-seche-linge-ew6h913so---electrolux-7333394162065.html']
+            'TE7G9CBS': ['https://excedent-electromenager.fr/seche-linge-pompe-a-chaleur/115221--7333394172408.html','https://www.megdiffusion.fr/vente/aeg/aeg-te7g9cbs-seche-linge-pompe-a-chaleur-9kg-sensidry/'],
+            'TR729EC4PB': ['https://www.aeg.fr/laundry/laundry/dryers/heat-pump-dryer/tr729ec4pb/','https://www.conceptachat.fr/produit/seche-linge-aeg-tr729ec4pb/'],
+            'TI64IB10IZ': ['https://www.aeg.fr/kitchen/cooking/hobs/induction-hob/ti64ib10iz/'],
+            'EW6H913SO': ['https://brico-travo.com/electro-menager/540662-electrolux-seche-linge-ew6h913so---electrolux-7333394162065.html']
           }
           def get(url):
               request = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (compatible; AB-Renov-product-images/1.0)', 'Accept': '*/*'})
@@ -46,20 +46,19 @@ jobs:
               def handle_data(self, data):
                   if self.in_heading: self.headings.append(data)
           def load_model(pair):
-              model,pages=pair
-              errors=[]
+              model,pages=pair; errors=[]
               for page in pages:
                   try:
                       raw,mime,final_page=get(page)
                       text=raw.decode('utf-8',errors='replace')
                       doc=ProductHTML(); doc.feed(text)
-                      if model.lower() not in ' '.join(doc.headings).lower():
-                          raise ValueError('Référence absente du titre de la fiche')
-                      matching=[x for x in doc.images if model.lower() in x.lower() and not any(s in x.lower() for s in ('label','energy','etiquette'))]
-                      matching.sort(key=lambda x: (0 if 'product_full' in x else 1, 0 if '_1_' in x else 1, -len(x)))
+                      if model.lower() not in text.lower(): raise ValueError('Référence absente de la fiche')
+                      if model.lower() not in final_page.lower() and model.lower() not in ' '.join(doc.headings).lower(): raise ValueError('Page produit non identifiée')
+                      matching=[x for x in doc.images if model.lower() in x.lower() and not any(s in x.lower() for s in ('label','energy','etiquette','logo'))]
+                      matching.sort(key=lambda x: (0 if 'product_full' in x else 1, 0 if '_1_' in x else 1))
                       candidates=list(dict.fromkeys(matching + doc.og))
                       for candidate in candidates:
-                          if candidate.startswith('data:'): continue
+                          if candidate.startswith('data:') or not candidate: continue
                           try:
                               image_url=urljoin(final_page,candidate)
                               binary,image_mime,final_image=get(image_url)
@@ -73,15 +72,15 @@ jobs:
                               result={'model':model,'file':path.name,'source_page':final_page,'source_image':final_image,'mime_type':image_mime,'size_bytes':len(binary),'sha256':hashlib.sha256(binary).hexdigest()}
                               print('PHOTO_OK '+json.dumps(result,ensure_ascii=False),flush=True)
                               return result
-                          except Exception as exc:
-                              errors.append(str(exc))
-                  except Exception as exc:
-                      errors.append(page+': '+str(exc))
-              raise RuntimeError(model+' : '+' | '.join(errors))
+                          except Exception as exc: errors.append(str(exc))
+                      if not candidates: errors.append('Aucune image identifiée sur '+page)
+                  except Exception as exc: errors.append(page+': '+str(exc))
+              print('PHOTO_ERROR '+model+' '+str(errors),flush=True)
+              return {'model':model,'error':errors}
           with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
               results=list(executor.map(load_model,products.items()))
-          assert len(results)==4
           (target/'sources.json').write_text(json.dumps({'retrieved_on':'2026-10-30','products':results},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          assert all('file' in p for p in results), 'Les quatre photos doivent être récupérées avant publication'
       - name: Enregistrer les quatre visuels
         run: |
           git config user.name 'AB RENOV 35'
@@ -93,6 +92,7 @@ jobs:
             git push origin HEAD:main
           fi
       - name: Préparer le contrôle visuel
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: xavier-product-visuals
