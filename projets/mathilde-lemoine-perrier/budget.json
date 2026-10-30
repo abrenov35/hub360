@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "maj": "29 octobre 2026",
+  "version": 4,
+  "maj": "30 octobre 2026",
   "statut": "Projet en attente du retour Quéguiner ; devis AB RENOV 35 à finaliser après choix et prix des produits",
   "enveloppeRenovation": 20000,
   "cuisineDiscaC": 6400.57,
@@ -9,7 +9,7 @@
   "budgetTtcElectroSeparation": false,
   "notes": [
     "Budget TTC maximal de 20 000 € : cuisine DISCAC, Leroy Merlin et électroménager Extra inclus.",
-    "Base cuisine indicative hors pose ; le prix de vente reste à valider.",
+    "Estimation cuisine retenue au devis AB RENOV 35 : 5 818,70 € HT, dont transport et éco-participation ; TVA 10 % : 581,87 € ; total 6 400,57 € TTC, hors pose.",
     "AB RENOV 35 attend les références et le devis de Quéguiner sur sanitaires, carrelage et faïence.",
     "Les clients se chargent de la dépose et évacuation des sols et de la cuisine existante ; la dépose du meuble vasque est également recommandée.",
     "Les adaptations des réseaux, la fourniture et pose des sanitaires, du carrelage et de la faïence, la pose des sols et des plinthes restent à chiffrer par AB RENOV 35.",
@@ -62,5 +62,15 @@
       "Dans la mesure du possible, dépose et évacuation du meuble de salle de bains pour limiter les coûts de main-d'œuvre et manutention"
     ],
     "precaution": "Travaux préparatoires à coordonner avec AB RENOV 35 ; les déconnexions techniques des réseaux d'eau et d'électricité doivent être sécurisées par un professionnel qualifié. Les économies éventuelles seront répercutées après révision du devis."
+  },
+  "cuisineDetail": {
+    "fournituresHt": 5399.18,
+    "transportHt": 370,
+    "ecoParticipationHt": 49.52,
+    "totalHt": 5818.7,
+    "tvaTaux": 10,
+    "tvaMontant": 581.87,
+    "totalTtc": 6400.57,
+    "poseIncluse": false
   }
 }
