@@ -1,0 +1,41 @@
+{
+  "retrieved_on": "2026-10-30",
+  "products": [
+    {
+      "model": "TE7G9CBS",
+      "file": "te7g9cbs.jpg",
+      "source_page": "https://excedent-electromenager.fr/seche-linge-pompe-a-chaleur/115221--7333394172408.html",
+      "source_image": "https://excedent-electromenager.fr/27382-large_default/default.jpg",
+      "mime_type": "image/jpeg",
+      "size_bytes": 62296,
+      "sha256": "beeb7ceb3900802c2eeb0231199e3fe610759e2e66721dfec47160aeaeceafb5"
+    },
+    {
+      "model": "TR729EC4PB",
+      "file": "tr729ec4pb.png",
+      "source_page": "https://www.conceptachat.fr/produit/seche-linge-aeg-tr729ec4pb/",
+      "source_image": "https://www.conceptachat.fr/wp-content/uploads/2025/09/2-1.png",
+      "mime_type": "image/png",
+      "size_bytes": 41720,
+      "sha256": "562b8f9990874b93d3e0a11fab751d2094de9ba3a048cd3690e62e847521faae"
+    },
+    {
+      "model": "TI64IB10IZ",
+      "file": "ti64ib10iz.jpg",
+      "source_page": "https://www.aeg.fr/kitchen/cooking/hobs/induction-hob/ti64ib10iz/",
+      "source_image": "https://www.aeg.fr/services/eml/transform/WS_ZO2000/97794d9e-ef50-4aee-bc40-86a9de2d73bf/2024944793-eps",
+      "mime_type": "image/jpeg",
+      "size_bytes": 394405,
+      "sha256": "8e1bb75a15ef395da8edaf53254d03412964700a93d9b39df928a5fabad86cb7"
+    },
+    {
+      "model": "EW6H913SO",
+      "file": "ew6h913so.jpg",
+      "source_page": "https://brico-travo.com/electro-menager/540662-electrolux-seche-linge-ew6h913so---electrolux-7333394162065.html",
+      "source_image": "https://brico-travo.com/742844-large_default/electrolux-seche-linge-ew6h913so--electrolux-1792545746.jpg",
+      "mime_type": "image/jpeg",
+      "size_bytes": 69858,
+      "sha256": "052d058dd3ce68f6a5e1d32d891f8f8cdf4694b033dfdb7ffd624fd82fccaebf"
+    }
+  ]
+}
