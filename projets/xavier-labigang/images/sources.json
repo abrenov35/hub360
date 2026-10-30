@@ -3,12 +3,12 @@
   "products": [
     {
       "model": "TE7G9CBS",
-      "file": "te7g9cbs.jpg",
-      "source_page": "https://excedent-electromenager.fr/seche-linge-pompe-a-chaleur/115221--7333394172408.html",
-      "source_image": "https://excedent-electromenager.fr/27382-large_default/default.jpg",
+      "file": "te7g9cbs-clean.jpg",
+      "source_page": "https://www.megdiffusion.fr/vente/aeg/aeg-te7g9cbs-seche-linge-pompe-a-chaleur-9kg-sensidry/",
+      "source_image": "https://www.megdiffusion.fr/wp-content/uploads/2026/09/260112EHVQ-tif.jpg",
       "mime_type": "image/jpeg",
-      "size_bytes": 62296,
-      "sha256": "beeb7ceb3900802c2eeb0231199e3fe610759e2e66721dfec47160aeaeceafb5"
+      "size_bytes": 46630,
+      "sha256": "d0342895dd926b6cf28954f2dfd984ee3ff02e8d44ac2473b6aaead4e7a517b0"
     },
     {
       "model": "TR729EC4PB",
