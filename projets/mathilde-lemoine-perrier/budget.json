@@ -1,50 +1,40 @@
 {
-  "version": 5,
+  "version": 6,
   "maj": "31 octobre 2026",
-  "statut": "Budget provisoire incomplet — quantités Quéguiner et prestations restant à chiffrer",
+  "statut": "Prestations optimisées — estimation partielle, derniers choix à chiffrer",
   "enveloppeRenovation": 20000,
   "cuisineDiscaC": 6226.19,
   "leroyMerlin": 2809.53,
   "electromenagerExtra": 1695.38,
   "budgetTtcElectroSeparation": false,
   "notes": [
-    "Plafond 20 000 € TTC électroménager compris. Budget provisoire, non devis global complet.",
-    "TVA prévisionnelle 10 % selon consigne Younès ; éligibilité à vérifier avant devis définitif.",
-    "Leroy Merlin : 2 809,53 € après remise commerciale TVA offerte, sans nouvelle réduction.",
-    "Extra : 1 695,38 € simulés à partir de 1 849,50 € supposés TTC à 20 %, même HT recalculé à 10 %. Hypothèse et taux à vérifier.",
-    "Quéguiner : prix public/brut uniquement ; ne pas additionner les deux devis. Écart du total fournisseur et frais éventuels à vérifier.",
-    "Quantités 1,44 m² et 0,59 m² non définitives. Nouveau chiffrage attendu avec carrelage du tablier, coupes et conditionnements. Ne pas recompter sanitaires/miroir."
+    "Budget cible 20 000 € TTC, électroménager compris. Total estimatif partiel 21 464,25 € TTC.",
+    "TVA 10 % pour le chiffrage AB RENOV ; Leroy Merlin 2 809,53 € après remise commerciale TVA offerte.",
+    "Offre optimisée : plinthes au forfait 495 € HT, livraison/raccordement électroménager et extension de garantie offerts.",
+    "Déposes du parquet, plinthes et carrelages à la charge du client ; dépose carrelage retirée du chiffrage.",
+    "Quantités Quéguiner 5,76 m² sol SDB/tablier et 5,31 m² faïence issues du devis du 31/10 ; prix publics conservés. Pas de carrelage cuisine choisi."
   ],
   "prixParReference": {
     "86163569": 100,
-    "95573753": 62.42,
-    "BBIE12100XD": 299.9,
-    "W3IFD536": 449.9,
-    "MS20A7013AB": 299.9,
-    "BC4S485M4D8-S": 599.9,
-    "AHG560BK": 199.9
+    "95573753": 62.42
   },
   "travauxManquants": [
-    "Carrelage et faïence aux quantités réelles, marges de coupe et conditionnements",
-    "Réalisation et habillage du tablier de baignoire à chiffrer séparément",
-    "Travaux salle de bains et pose sanitaires",
-    "Pose des sols, sous-couche, plinthes et seuils",
-    "Adaptations plomberie et électricité",
-    "Consommables et frais restant à chiffrer"
+    "Choix et fourniture du carrelage cuisine, quantité à définir",
+    "Ragréage et pose carrelage cuisine, surface à préciser",
+    "Profilés de jonction complémentaires aux cinq barres"
   ],
   "electromenagerComprisDansBudget": true,
   "plafondStrict": true,
-  "resteDisponible": 6159.6,
+  "resteDisponible": -1464.25,
   "suiviFournisseurs": {
     "Quéguiner": {
-      "statut": "Proposition reçue le 31/10 ; quantités réelles attendues",
+      "statut": "Quantités SDB intégrées : 5,76 m² sol/tablier ; 5,31 m² faïence",
       "postes": [
-        "Carrelage et faïence aux quantités réelles, marges de coupe et conditionnements",
-        "Réalisation et habillage du tablier de baignoire à chiffrer séparément"
+        "Prix publics conservés pour le chiffrage client"
       ]
     },
     "AB RENOV 35": {
-      "statut": "Devis à finaliser après réception des choix et chiffrage Quéguiner"
+      "statut": "Prestations optimisées ; derniers choix cuisine et profilés à chiffrer"
     }
   },
   "repartitionTravaux": {
@@ -55,9 +45,10 @@
       "Pose de l'ensemble des revêtements de sol et des plinthes"
     ],
     "Clients": [
-      "Dépose et évacuation des sols existants avant travaux",
-      "Dépose et évacuation de la cuisine existante avant travaux",
-      "Dans la mesure du possible, dépose et évacuation du meuble de salle de bains pour limiter les coûts de main-d'œuvre et manutention"
+      "Dépose du parquet et des plinthes existants",
+      "Dépose des carrelages cuisine et SDB, évacuation des carrelages et gravats",
+      "Dépose et évacuation ancienne cuisine avant intervention",
+      "Dépose meuble SDB recommandée dans la mesure du possible"
     ],
     "precaution": "Travaux préparatoires à coordonner avec AB RENOV 35 ; les déconnexions techniques des réseaux d'eau et d'électricité doivent être sécurisées par un professionnel qualifié. Les économies éventuelles seront répercutées après révision du devis."
   },
@@ -78,11 +69,11 @@
     "ecartArrondiArticles": 0.01
   },
   "poseCuisine": 1760,
-  "queguinerEquipements": 1349.3,
-  "totalProvisoire": 13840.4,
+  "queguinerEquipements": 1896.85,
+  "totalProvisoire": 21464.25,
   "queguinerDetail": {
     "dateReception": "2026-10-31",
-    "source": "Ilan Hatrel — Choix Perrier — PERRIER.pdf (prix brut)",
+    "source": "Quantités : devis D68 0020667613 du 31/10/2026 ; prix : offre publique PERRIER.pdf",
     "lignes": [
       [
         "Carrelage Medicea Marble Soft 60 × 120",
@@ -128,10 +119,16 @@
       ]
     ],
     "sanitairesMiroirHt": 1210.9,
-    "ecoParticipationHt": 15.74,
-    "totalHt": 1226.64,
-    "totalTtc": 1349.3,
-    "quantitesDefinitives": false
+    "ecoParticipationHt": 16.18,
+    "totalHt": 1724.41,
+    "totalTtc": 1896.85,
+    "quantitesDefinitives": true,
+    "carrelageQuantite": 5.76,
+    "faienceQuantite": 5.31,
+    "carrelageMontantHt": 324.29,
+    "faienceMontantHt": 165.14,
+    "fraisFmHt": 7.9,
+    "perimetre": "Salle de bains et tablier uniquement ; carrelage cuisine non choisi."
   },
   "classementYaya": {
     "source": "Confirmation Younès du 31/10/2026",
@@ -144,5 +141,71 @@
       "Annexe_cuisine_AB_RENOV_35_LEMOINE_PERRIER.pdf"
     ],
     "note": "PDF joints selon confirmation utilisateur ; ne pas importer en double. Choix ne constitue pas une commande fournisseur."
+  },
+  "travauxAbRenov": 7076.3,
+  "travauxDetail": [
+    [
+      "Pose parquet — 72 m² estimés × 30 €",
+      2160
+    ],
+    [
+      "Sous-couche — 72 m² estimés × 4 €",
+      288
+    ],
+    [
+      "Ragréage SDB — forfait",
+      125
+    ],
+    [
+      "Barres de jonction — 5 × 19 €",
+      95
+    ],
+    [
+      "Plinthes MDF blanches — forfait fourniture et pose, hors peinture",
+      495
+    ],
+    [
+      "Carrelage SDB et tablier — pose, panneau Wedi et habillage",
+      490
+    ],
+    [
+      "Pose faïence — forfait",
+      690
+    ],
+    [
+      "Pose meuble SDB",
+      125
+    ],
+    [
+      "Plomberie SDB — forfait pose/raccordement sanitaires",
+      495
+    ],
+    [
+      "Électricité SDB",
+      145
+    ],
+    [
+      "Électricité cuisine",
+      495
+    ],
+    [
+      "Plomberie cuisine",
+      545
+    ],
+    [
+      "Placards — 3 × 95 €",
+      285
+    ]
+  ],
+  "avantages": {
+    "leroyMerlinGain": 561.91,
+    "plinthesBaseHt": 840,
+    "plinthesForfaitHt": 495,
+    "plinthesGainTtc": 379.5,
+    "garantieParAppareil": 25,
+    "garantieMaximumAppareils": 5,
+    "garantieMaximumValeur": 125,
+    "livraisonElectroOfferte": true,
+    "raccordementElectroOffert": true
   }
 }
