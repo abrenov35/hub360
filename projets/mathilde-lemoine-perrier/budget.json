@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "maj": "31 octobre 2026",
   "statut": "Prestations optimisées — estimation partielle, derniers choix à chiffrer",
   "enveloppeRenovation": 20000,
@@ -12,15 +12,14 @@
     "TVA 10 % pour le chiffrage AB RENOV ; Leroy Merlin 2 809,53 € après remise commerciale TVA offerte.",
     "Offre optimisée : plinthes au forfait 495 € HT, livraison/raccordement électroménager et extension de garantie offerts.",
     "Déposes du parquet, plinthes et carrelages à la charge du client ; dépose carrelage retirée du chiffrage.",
-    "Quantités Quéguiner 5,76 m² sol SDB/tablier et 5,31 m² faïence issues du devis du 31/10 ; prix publics conservés. Pas de carrelage cuisine choisi."
+    "Quantités Quéguiner 5,76 m² sol SDB/tablier et 5,31 m² faïence issues du devis du 31/10 ; prix publics conservés. Sol cuisine en parquet, inclus dans le lot parquet global ; aucun carrelage ni ragréage cuisine prévu.",
+    "Instruction Younès du 31/10/2026 : parquet cuisine compris dans le lot global, sans supplément ni double comptage."
   ],
   "prixParReference": {
     "86163569": 100,
     "95573753": 62.42
   },
   "travauxManquants": [
-    "Choix et fourniture du carrelage cuisine, quantité à définir",
-    "Ragréage et pose carrelage cuisine, surface à préciser",
     "Profilés de jonction complémentaires aux cinq barres"
   ],
   "electromenagerComprisDansBudget": true,
@@ -42,11 +41,11 @@
       "Fourniture et pose du carrelage et de la faïence de salle de bains",
       "Fourniture et pose des sanitaires",
       "Adaptation des réseaux d'eau et d'évacuation",
-      "Pose de l'ensemble des revêtements de sol et des plinthes"
+      "Pose du parquet, cuisine comprise dans le lot global, et des plinthes"
     ],
     "Clients": [
       "Dépose du parquet et des plinthes existants",
-      "Dépose des carrelages cuisine et SDB, évacuation des carrelages et gravats",
+      "Dépose du carrelage SDB, évacuation des carrelages et gravats",
       "Dépose et évacuation ancienne cuisine avant intervention",
       "Dépose meuble SDB recommandée dans la mesure du possible"
     ],
@@ -128,7 +127,7 @@
     "carrelageMontantHt": 324.29,
     "faienceMontantHt": 165.14,
     "fraisFmHt": 7.9,
-    "perimetre": "Salle de bains et tablier uniquement ; carrelage cuisine non choisi."
+    "perimetre": "Salle de bains et tablier uniquement. Sol cuisine en parquet inclus dans le lot global."
   },
   "classementYaya": {
     "source": "Confirmation Younès du 31/10/2026",
