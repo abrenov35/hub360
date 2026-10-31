@@ -1,19 +1,19 @@
 {
-  "version": 4,
-  "maj": "30 octobre 2026",
-  "statut": "Projet en attente du retour Quéguiner ; devis AB RENOV 35 à finaliser après choix et prix des produits",
+  "version": 5,
+  "maj": "31 octobre 2026",
+  "statut": "Budget provisoire incomplet — quantités Quéguiner et prestations restant à chiffrer",
   "enveloppeRenovation": 20000,
-  "cuisineDiscaC": 6400.57,
+  "cuisineDiscaC": 6226.19,
   "leroyMerlin": 2809.53,
-  "electromenagerExtra": 1849.5,
+  "electromenagerExtra": 1695.38,
   "budgetTtcElectroSeparation": false,
   "notes": [
-    "Budget TTC maximal de 20 000 € : cuisine DISCAC, Leroy Merlin et électroménager Extra inclus.",
-    "Estimation cuisine retenue au devis AB RENOV 35 : 5 818,70 € HT, dont transport et éco-participation ; TVA 10 % : 581,87 € ; total 6 400,57 € TTC, hors pose.",
-    "AB RENOV 35 attend les références et le devis de Quéguiner sur sanitaires, carrelage et faïence.",
-    "Les clients se chargent de la dépose et évacuation des sols et de la cuisine existante ; la dépose du meuble vasque est également recommandée.",
-    "Les adaptations des réseaux, la fourniture et pose des sanitaires, du carrelage et de la faïence, la pose des sols et des plinthes restent à chiffrer par AB RENOV 35.",
-    "Solde théorique de 8 940,40 € avant les prestations restant à chiffrer."
+    "Plafond 20 000 € TTC électroménager compris. Budget provisoire, non devis global complet.",
+    "TVA prévisionnelle 10 % selon consigne Younès ; éligibilité à vérifier avant devis définitif.",
+    "Leroy Merlin : 2 809,53 € après remise commerciale TVA offerte, sans nouvelle réduction.",
+    "Extra : 1 695,38 € simulés à partir de 1 849,50 € supposés TTC à 20 %, même HT recalculé à 10 %. Hypothèse et taux à vérifier.",
+    "Quéguiner : prix public/brut uniquement ; ne pas additionner les deux devis. Écart du total fournisseur et frais éventuels à vérifier.",
+    "Quantités 1,44 m² et 0,59 m² non définitives. Nouveau chiffrage attendu avec carrelage du tablier, coupes et conditionnements. Ne pas recompter sanitaires/miroir."
   ],
   "prixParReference": {
     "86163569": 100,
@@ -25,25 +25,23 @@
     "AHG560BK": 199.9
   },
   "travauxManquants": [
-    "Retour Quéguiner (choix sanitaires, carrelage et faïence et devis)",
-    "Devis AB RENOV 35 : fourniture et pose carrelage/faïence",
-    "Devis AB RENOV 35 : sanitaires fourniture et pose",
-    "Devis AB RENOV 35 : adaptation réseaux",
-    "Devis AB RENOV 35 : pose de tous les revêtements de sols, sous-couche et plinthes",
-    "Pose cuisine et contraintes techniques, à définir"
+    "Carrelage et faïence aux quantités réelles, marges de coupe et conditionnements",
+    "Réalisation et habillage du tablier de baignoire à chiffrer séparément",
+    "Travaux salle de bains et pose sanitaires",
+    "Pose des sols, sous-couche, plinthes et seuils",
+    "Adaptations plomberie et électricité",
+    "Consommables et frais restant à chiffrer"
   ],
   "electromenagerComprisDansBudget": true,
   "plafondStrict": true,
-  "resteDisponible": 8940.4,
+  "resteDisponible": 6159.6,
   "suiviFournisseurs": {
     "Quéguiner": {
-      "statut": "En attente de réponse",
+      "statut": "Proposition reçue le 31/10 ; quantités réelles attendues",
       "postes": [
-        "Choix et devis sanitaires",
-        "Carrelage",
-        "Faïence"
-      ],
-      "impact": "Conditionne le chiffrage définitif AB RENOV 35"
+        "Carrelage et faïence aux quantités réelles, marges de coupe et conditionnements",
+        "Réalisation et habillage du tablier de baignoire à chiffrer séparément"
+      ]
     },
     "AB RENOV 35": {
       "statut": "Devis à finaliser après réception des choix et chiffrage Quéguiner"
@@ -64,13 +62,87 @@
     "precaution": "Travaux préparatoires à coordonner avec AB RENOV 35 ; les déconnexions techniques des réseaux d'eau et d'électricité doivent être sécurisées par un professionnel qualifié. Les économies éventuelles seront répercutées après révision du devis."
   },
   "cuisineDetail": {
-    "fournituresHt": 5399.18,
-    "transportHt": 370,
-    "ecoParticipationHt": 49.52,
-    "totalHt": 5818.7,
+    "source": "FINDIS 01_539_2026/29/4 — 30/10/2026",
+    "meublesHt": 4848.62,
+    "plansHt": 542.02,
+    "accessoiresHt": 124.46,
+    "fournituresHt": 5515.1,
+    "ecoParticipationHt": 50.07,
+    "transportHt": 95,
+    "totalHt": 5660.17,
     "tvaTaux": 10,
-    "tvaMontant": 581.87,
-    "totalTtc": 6400.57,
-    "poseIncluse": false
+    "totalTtc": 6226.19,
+    "poseHt": 1600,
+    "totalAvecPoseHt": 7260.17,
+    "totalAvecPoseTtc": 7986.19,
+    "ecartArrondiArticles": 0.01
+  },
+  "poseCuisine": 1760,
+  "queguinerEquipements": 1349.3,
+  "totalProvisoire": 13840.4,
+  "queguinerDetail": {
+    "dateReception": "2026-10-31",
+    "source": "Ilan Hatrel — Choix Perrier — PERRIER.pdf (prix brut)",
+    "lignes": [
+      [
+        "Carrelage Medicea Marble Soft 60 × 120",
+        "A049793",
+        56.3,
+        "HT/m²"
+      ],
+      [
+        "Faïence Mayolica beige 7,5 × 30 Pamesa",
+        "",
+        31.1,
+        "HT/m²"
+      ],
+      [
+        "Baignoire OZE Inca 180 × 80",
+        "",
+        399,
+        "HT"
+      ],
+      [
+        "Vidage baignoire chromé",
+        "SV300C",
+        45,
+        "HT"
+      ],
+      [
+        "Pare-baignoire OZE chromé",
+        "PRB1VTC",
+        173.6,
+        "HT"
+      ],
+      [
+        "Colonne bain-douche noire thermostatique Gala",
+        "GALA830NM",
+        394.3,
+        "HT"
+      ],
+      [
+        "Miroir Jasper 80 × 80",
+        "JASPER800",
+        199,
+        "HT"
+      ]
+    ],
+    "sanitairesMiroirHt": 1210.9,
+    "ecoParticipationHt": 15.74,
+    "totalHt": 1226.64,
+    "totalTtc": 1349.3,
+    "quantitesDefinitives": false
+  },
+  "classementYaya": {
+    "source": "Confirmation Younès du 31/10/2026",
+    "chantier": "LEMOINE - PERRIER",
+    "rubrique": "Commandes",
+    "statut": "Choix",
+    "documents": [
+      "PERRIER.pdf",
+      "PERRIER prix nets.pdf",
+      "Annexe_cuisine_AB_RENOV_35_LEMOINE_PERRIER.pdf"
+    ],
+    "note": "PDF joints selon confirmation utilisateur ; ne pas importer en double. Choix ne constitue pas une commande fournisseur."
   }
 }
