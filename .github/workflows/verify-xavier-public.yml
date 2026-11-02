@@ -15,17 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Contrôler la page publique, les quatre photos et les quatre PDF
+      - uses: actions/checkout@v4
+      - name: Contrôler la page publique, les deux équipements et les quatre PDF
         shell: python
         env:
           CHECK_REVISION: ${{ github.sha }}
         run: |
-          import hashlib, json, os, time, urllib.request
+          import hashlib, json, os, pathlib, time, urllib.request
           from html.parser import HTMLParser
           from urllib.parse import urljoin
           base='https://abrenov35.github.io/hub360/projets/xavier-labigang/'
           url=base+'variante-seche-linge.html'
-          marker='visuels-quatre-produits-20261030-v3'
+          marker='xavier-haier-plaque-20261102-v2'
+          expected_page=pathlib.Path('projets/xavier-labigang/variante-seche-linge.html').read_bytes()
           def get(target):
               req=urllib.request.Request(target,headers={'User-Agent':'AB-RENOV-Xavier-Link-Check','Cache-Control':'no-cache'})
               with urllib.request.urlopen(req,timeout=20) as response:
@@ -35,7 +37,7 @@ jobs:
               try:
                   status,mime,body=get(url+'?verification='+os.environ['CHECK_REVISION']+'-'+str(attempt))
                   candidate=body.decode('utf-8')
-                  if status==200 and marker in candidate: page=candidate;break
+                  if status==200 and marker in candidate and hashlib.sha256(body).digest()==hashlib.sha256(expected_page).digest(): page=candidate;break
               except Exception as exc: print('Publication en cours :',str(exc))
               time.sleep(5)
           assert page is not None,'Nouvelle version publique non confirmée'
@@ -61,10 +63,12 @@ jobs:
           assert len(parsed.pdfs)==4 and set(parsed.pdfs)==set(expected_pdfs)
           assert len(parsed.amounts)==4 and sum(parsed.amounts)==95435
           assert all(a in parsed.ids for a in parsed.anchors)
-          expected_models={'TE7G9CBS','TR729EC4PB','EW6H913SO','TI64IB10IZ'}
-          assert len(parsed.images)==4 and {x.get('data-model') for x in parsed.images}==expected_models
-          for value in ('468,20','394,15','371,90','840,10','766,05','Morvan','Modèle initial · Indisponible'):
+          expected_models={'HD90-D357U1FR','TI64IB10IZ'}
+          assert len(parsed.images)==2 and {x.get('data-model') for x in parsed.images}==expected_models
+          for value in ('HD90-D357U1FR','TI64IB10IZ','371,90','954,35','1 326,25','Morvan','Tarif Findis à confirmer'):
               assert value in page,'Contenu manquant : '+value
+          for obsolete in ('TE7G9CBS','TR729EC4PB','EW6H913SO','Electrolux','840,10','766,05'):
+              assert obsolete not in page,'Ancien choix encore présent : '+obsolete
           _,_,raw=get(base+'images/sources.json?revision='+os.environ['CHECK_REVISION'])
           sources={p['model']:p for p in json.loads(raw)['products']}
           results=[]
@@ -84,7 +88,7 @@ jobs:
               assert hashlib.sha256(binary).hexdigest()==expected_pdfs[relative]
               results.append({'type':'pdf','file':relative,'status':status,'size_bytes':len(binary)})
               print('PDF_PUBLIC_OK',relative,status)
-          report={'page_url':url,'status':200,'revision':marker,'photos':4,'pdfs':4,'prices_unchanged':True,'photo_enlargement_links':4,'checks':results}
+          report={'page_url':url,'status':200,'revision':marker,'photos':2,'pdfs':4,'purchase_total_preserved':True,'haier_price_pending':True,'photo_enlargement_links':2,'checks':results}
           print('PUBLICATION_OK '+json.dumps(report,ensure_ascii=False))
           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
-              f.write('## Suivi Xavier validé\n\nVersion avec 4 photos publiée (HTTP 200).\n\nLes 4 photos et leurs liens d’agrandissement sont accessibles sans connexion et conformes aux fichiers enregistrés.\n\nLes 4 PDF originaux et les montants HT sont conservés et contrôlés.\n')
+              f.write('## Suivi Xavier validé\n\nVersion Haier + plaque AEG avec 2 photos publiée (HTTP 200).\n\nLes 2 photos et leurs liens d’agrandissement sont accessibles sans connexion et conformes aux fichiers enregistrés.\n\nLes 4 PDF originaux et les montants HT sont conservés et contrôlés.\n')

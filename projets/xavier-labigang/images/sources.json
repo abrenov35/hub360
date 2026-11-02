@@ -1,23 +1,14 @@
 {
-  "retrieved_on": "2026-10-30",
+  "retrieved_on": "2026-11-02",
   "products": [
     {
-      "model": "TE7G9CBS",
-      "file": "te7g9cbs-clean.jpg",
-      "source_page": "https://www.megdiffusion.fr/vente/aeg/aeg-te7g9cbs-seche-linge-pompe-a-chaleur-9kg-sensidry/",
-      "source_image": "https://www.megdiffusion.fr/wp-content/uploads/2026/09/260112EHVQ-tif.jpg",
+      "model": "HD90-D357U1FR",
+      "file": "haier-hd90-d357u1fr.jpg",
+      "source_page": "https://www.extra.fr/p-seche-linge-hd90-d357u1fr",
+      "source_image": "https://www.extra.fr/photo/product/seche-linge-hd90-d357u1fr.jpg",
       "mime_type": "image/jpeg",
-      "size_bytes": 46630,
-      "sha256": "d0342895dd926b6cf28954f2dfd984ee3ff02e8d44ac2473b6aaead4e7a517b0"
-    },
-    {
-      "model": "TR729EC4PB",
-      "file": "tr729ec4pb.png",
-      "source_page": "https://www.conceptachat.fr/produit/seche-linge-aeg-tr729ec4pb/",
-      "source_image": "https://www.conceptachat.fr/wp-content/uploads/2025/09/2-1.png",
-      "mime_type": "image/png",
-      "size_bytes": 41720,
-      "sha256": "562b8f9990874b93d3e0a11fab751d2094de9ba3a048cd3690e62e847521faae"
+      "size_bytes": 15740,
+      "sha256": "7b4a3f4c33d79339450f9d2a2ab388206300e02f6b2cd451f93032e80fcfae33"
     },
     {
       "model": "TI64IB10IZ",
@@ -27,15 +18,6 @@
       "mime_type": "image/jpeg",
       "size_bytes": 394405,
       "sha256": "8e1bb75a15ef395da8edaf53254d03412964700a93d9b39df928a5fabad86cb7"
-    },
-    {
-      "model": "EW6H913SO",
-      "file": "ew6h913so.jpg",
-      "source_page": "https://brico-travo.com/electro-menager/540662-electrolux-seche-linge-ew6h913so---electrolux-7333394162065.html",
-      "source_image": "https://brico-travo.com/742844-large_default/electrolux-seche-linge-ew6h913so--electrolux-1792545746.jpg",
-      "mime_type": "image/jpeg",
-      "size_bytes": 69858,
-      "sha256": "052d058dd3ce68f6a5e1d32d891f8f8cdf4694b033dfdb7ffd624fd82fccaebf"
     }
   ]
 }
