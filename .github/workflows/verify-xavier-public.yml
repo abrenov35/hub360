@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Contrôler la page publique, les deux équipements et les quatre PDF
+      - name: Contrôler la page publique, les deux équipements et les cinq PDF
         shell: python
         env:
           CHECK_REVISION: ${{ github.sha }}
@@ -26,7 +26,7 @@ jobs:
           from urllib.parse import urljoin
           base='https://abrenov35.github.io/hub360/projets/xavier-labigang/'
           url=base+'variante-seche-linge.html'
-          marker='xavier-haier-plaque-20261102-v2'
+          marker='xavier-copeint-14563-20261105'
           expected_page=pathlib.Path('projets/xavier-labigang/variante-seche-linge.html').read_bytes()
           def get(target):
               req=urllib.request.Request(target,headers={'User-Agent':'AB-RENOV-Xavier-Link-Check','Cache-Control':'no-cache'})
@@ -55,17 +55,18 @@ jobs:
                       if 'data-amount-cents' in a:self.amounts.append(int(a['data-amount-cents']))
           parsed=Page();parsed.feed(page)
           expected_pdfs={
+              'documents/Copeint_14563_2026-11-05.pdf':'65a1da79f6eecbf53ddc63a548cedc71ce8ecb6f2bc424f84ec2cb2644307b8c',
               'documents/Copeint_12897_2026-09-02.pdf':'d0415937dda599027a6072797ab442791ade233d3c3b9c6f733bdc907bd51717',
               'documents/Copeint_13199_2026-10-07.pdf':'399e00359b34ee9969416a7d6830001a7488b09cde8c1c45d387e741857f04b1',
               'documents/Copeint_13423_2026-10-30.pdf':'ec8a60fa8d1aaaa41d579db9a4ba2350c3717c6fea826eed3e4cd96a8f6fe84c',
               'documents/POINTP_2036525760_Baignoire.pdf':'0d275b6a5025e0dce2e9e8a74f1e9ee31643397eaa70822cb5a909726f480eae'
           }
-          assert len(parsed.pdfs)==4 and set(parsed.pdfs)==set(expected_pdfs)
-          assert len(parsed.amounts)==4 and sum(parsed.amounts)==95435
+          assert len(parsed.pdfs)==5 and set(parsed.pdfs)==set(expected_pdfs)
+          assert len(parsed.amounts)==5 and sum(parsed.amounts)==156766
           assert all(a in parsed.ids for a in parsed.anchors)
           expected_models={'HD90-D357U1FR','TI64IB10IZ'}
           assert len(parsed.images)==2 and {x.get('data-model') for x in parsed.images}==expected_models
-          for value in ('HD90-D357U1FR','TI64IB10IZ','371,90','954,35','1 326,25','Morvan','Tarif Findis à confirmer'):
+          for value in ('HD90-D357U1FR','TI64IB10IZ','371,90','1 567,66','1 939,56','Morvan','Tarif Findis à confirmer'):
               assert value in page,'Contenu manquant : '+value
           for obsolete in ('TE7G9CBS','TR729EC4PB','EW6H913SO','Electrolux','840,10','766,05'):
               assert obsolete not in page,'Ancien choix encore présent : '+obsolete
@@ -88,7 +89,7 @@ jobs:
               assert hashlib.sha256(binary).hexdigest()==expected_pdfs[relative]
               results.append({'type':'pdf','file':relative,'status':status,'size_bytes':len(binary)})
               print('PDF_PUBLIC_OK',relative,status)
-          report={'page_url':url,'status':200,'revision':marker,'photos':2,'pdfs':4,'purchase_total_preserved':True,'haier_price_pending':True,'photo_enlargement_links':2,'checks':results}
+          report={'page_url':url,'status':200,'revision':marker,'photos':2,'pdfs':5,'purchase_total_preserved':True,'haier_price_pending':True,'photo_enlargement_links':2,'checks':results}
           print('PUBLICATION_OK '+json.dumps(report,ensure_ascii=False))
           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
-              f.write('## Suivi Xavier validé\n\nVersion Haier + plaque AEG avec 2 photos publiée (HTTP 200).\n\nLes 2 photos et leurs liens d’agrandissement sont accessibles sans connexion et conformes aux fichiers enregistrés.\n\nLes 4 PDF originaux et les montants HT sont conservés et contrôlés.\n')
+              f.write('## Suivi Xavier validé\n\nVersion Haier + plaque AEG avec 2 photos publiée (HTTP 200).\n\nLes 2 photos et leurs liens d’agrandissement sont accessibles sans connexion et conformes aux fichiers enregistrés.\n\nLes 5 PDF originaux et les montants HT sont conservés et contrôlés.\n')
