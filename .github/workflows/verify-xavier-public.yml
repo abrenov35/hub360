@@ -26,7 +26,7 @@ jobs:
           from urllib.parse import urljoin
           base='https://abrenov35.github.io/hub360/projets/xavier-labigang/'
           url=base+'variante-seche-linge.html'
-          marker='xavier-findis-valides-20261105'
+          marker='xavier-haier-capture-20261105'
           expected_page=pathlib.Path('projets/xavier-labigang/variante-seche-linge.html').read_bytes()
           def get(target):
               req=urllib.request.Request(target,headers={'User-Agent':'AB-RENOV-Xavier-Link-Check','Cache-Control':'no-cache'})
@@ -64,11 +64,11 @@ jobs:
           assert len(parsed.pdfs)==5 and set(parsed.pdfs)==set(expected_pdfs)
           assert len(parsed.amounts)==5 and sum(parsed.amounts)==156766
           assert all(a in parsed.ids for a in parsed.anchors)
-          expected_models={'TI64IB10IZ'}
-          assert len(parsed.images)==1 and {x.get('data-model') for x in parsed.images}==expected_models
-          for value in ('TE7G9CBS','TI64IB10IZ','371,90','468,20','2 001,55','Morvan','À facturer sur le chantier'):
+          expected_models={'HD90-D357U1FR','TI64IB10IZ'}
+          assert len(parsed.images)==2 and {x.get('data-model') for x in parsed.images}==expected_models
+          for value in ('HD90-D357U1FR','TI64IB10IZ','371,90','356,19','1 889,54','Morvan','À facturer sur le chantier'):
               assert value in page,'Contenu manquant : '+value
-          for obsolete in ('HD90-D357U1FR','TR729EC4PB','EW6H913SO','Electrolux','766,05'):
+          for obsolete in ('TE7G9CBS','TR729EC4PB','EW6H913SO','Electrolux','766,05'):
               assert obsolete not in page,'Ancien choix encore présent : '+obsolete
           _,_,raw=get(base+'images/sources.json?revision='+os.environ['CHECK_REVISION'])
           sources={p['model']:p for p in json.loads(raw)['products']}
@@ -89,7 +89,7 @@ jobs:
               assert hashlib.sha256(binary).hexdigest()==expected_pdfs[relative]
               results.append({'type':'pdf','file':relative,'status':status,'size_bytes':len(binary)})
               print('PDF_PUBLIC_OK',relative,status)
-          report={'page_url':url,'status':200,'revision':marker,'photos':1,'pdfs':5,'purchase_total_preserved':True,'appliances_validated':True,'photo_enlargement_links':1,'checks':results}
+          report={'page_url':url,'status':200,'revision':marker,'photos':2,'pdfs':5,'purchase_total_preserved':True,'appliances_validated':True,'photo_enlargement_links':2,'checks':results}
           print('PUBLICATION_OK '+json.dumps(report,ensure_ascii=False))
           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
               f.write('## Suivi Xavier validé\n\nVersion achats Findis validés, hors baignoire, publiée (HTTP 200).\n\nLa photo et son lien d’agrandissement sont accessibles sans connexion et conformes aux fichiers enregistrés.\n\nLes 5 PDF originaux et les montants HT sont conservés et contrôlés.\n')
